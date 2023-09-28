@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { color } from "./color.styles";
 
 export const globalStyles = css`
   @font-face {
@@ -12,6 +13,11 @@ export const globalStyles = css`
     font-family: "pretendard", sans-serif;
     font-size: 16px;
     font-weight: 400;
+  }
+  a {
+    display: block;
+    text-decoration: none;
+    color: ${color.block};
   }
 
   input,
