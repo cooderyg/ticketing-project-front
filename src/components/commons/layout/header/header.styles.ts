@@ -3,6 +3,11 @@ import { color } from "../../../../commons/styles/color.styles";
 
 export const Header = styled.header`
   border-bottom: 1px solid #ccc;
+  position: fixed;
+  top: 0;
+  z-index: 99;
+  width: 100%;
+  background-color: ${color.white};
 `;
 
 export const Wrapper = styled.div`

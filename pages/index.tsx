@@ -1,5 +1,5 @@
-import Head from 'next/head'
-
+import Head from "next/head";
+import * as S from "../src/components/commons/styles/index.styles";
 
 export default function Home() {
   return (
@@ -10,7 +10,13 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>테스트</div>
+      <S.Wrapper>
+        <S.CardBox>
+          {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map((el) => (
+            <S.Card key={el}>카드1</S.Card>
+          ))}
+        </S.CardBox>
+      </S.Wrapper>
     </>
-  )
+  );
 }
