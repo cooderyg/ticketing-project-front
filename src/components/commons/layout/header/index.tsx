@@ -9,23 +9,25 @@ export default function LayoutHeader(): JSX.Element {
       <S.Wrapper>
         <S.LogoBox>
           <Link href="/">
-            <Image
-              src={LogoImage}
-              alt="logo"
-              width={120}
-              height={40}
-              unoptimized={true}
-            />
+            <a>
+              <Image
+                src={LogoImage}
+                alt="logo"
+                width={120}
+                height={40}
+                unoptimized={true}
+              />
+            </a>
           </Link>
         </S.LogoBox>
         <S.Nav>
-          <Link href="">
+          <Link href="/">
             <a>뮤지컬</a>
           </Link>
-          <Link href="">
+          <Link href="/">
             <a>연극</a>
           </Link>
-          <Link href="">
+          <Link href="/">
             <a>콘서트</a>
           </Link>
           <Link href="/login">
