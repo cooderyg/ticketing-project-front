@@ -17,7 +17,7 @@ export const globalStyles = css`
   a {
     display: block;
     text-decoration: none;
-    color: ${color.block};
+    color: ${color.black};
   }
 
   input,
