@@ -13,6 +13,10 @@ export const Wrapper = styled.div`
   padding: 120px 0 160px;
 `;
 
+export const Description = styled.p`
+  margin-bottom: 20px;
+`;
+
 export const Address = styled.address`
   font-style: normal;
 `;
