@@ -34,7 +34,7 @@ export const InfoPaymentWrapper = styled.div`
   @media (max-width: 1080px) {
     flex: auto;
   }
-  @media (max-width: 930px) {
+  @media (max-width: 950px) {
     flex-direction: column;
     flex: 0;
   }
@@ -48,7 +48,7 @@ export const PosterBox = styled.div`
   @media (max-width: 1080px) {
     margin-right: 20px;
   }
-  @media (max-width: 930px) {
+  @media (max-width: 950px) {
     margin-right: 0;
     width: 100%;
   }
@@ -94,7 +94,9 @@ export const PriceBox = styled.ul`
 `;
 
 export const PaymentBox = styled.ul`
-  padding: 16px 0;
+  @media (max-width: 950px) {
+    padding: 16px 0;
+  }
 `;
 
 export const SeatSelect = styled.select`
