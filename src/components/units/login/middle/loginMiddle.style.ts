@@ -11,6 +11,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 300px;
+  min-height: 60vh;
 `;
 
 export const LoginForm = styled.form`
@@ -54,6 +55,7 @@ export const SubmitButton = styled.button`
   padding: 12px 32px;
   border-radius: 8px;
   background-color: ${color.primary};
+  color: ${color.white};
   transition: 0.2s;
   cursor: pointer;
   :hover {
