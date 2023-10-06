@@ -5,12 +5,21 @@ export const Container = styled.section`
   margin: 100px auto 20px;
   padding: 0 20px;
   max-width: 1280px;
+  min-height: 80vh;
 `;
 
 export const Wrapper = styled.div`
   display: flex;
   padding-bottom: 24px;
   border-bottom: 1px solid ${color.gray};
+  @media (max-width: 1080px) {
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const ProductTitle = styled.h2`
@@ -19,14 +28,43 @@ export const ProductTitle = styled.h2`
   font-weight: bold;
 `;
 
+export const InfoPaymentWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  @media (max-width: 1080px) {
+    flex: auto;
+  }
+  @media (max-width: 930px) {
+    flex-direction: column;
+    flex: 0;
+  }
+`;
+
 // 이미지
 export const PosterBox = styled.div`
-  margin-right: 80px;
+  margin-right: 120px;
+  width: 300px;
+  height: 400;
+  @media (max-width: 1080px) {
+    margin-right: 20px;
+  }
+  @media (max-width: 930px) {
+    margin-right: 0;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 // 설명
 export const InfoBox = styled.ul`
   margin-right: auto;
+
+  > li:first-child {
+    padding-top: 0;
+  }
 `;
 
 export const DescBox = styled.li`
@@ -92,7 +130,7 @@ export const PaymentBtn = styled.button`
   padding: 12px 40px;
   margin-top: 20px;
   background-color: ${color.primary};
-  border: 1px solid ${color.gray};
+  color: ${color.white};
   border-radius: 4px;
   font-size: 20px;
   font-weight: bold;
