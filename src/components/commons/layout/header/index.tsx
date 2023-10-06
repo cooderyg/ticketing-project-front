@@ -1,7 +1,7 @@
 import Link from "next/link";
 import * as S from "./header.styles";
 import Image from "next/image";
-import LogoImage from "../../../../../public/images/ticketing-logo.jpg";
+import LogoImage from "../../../../../public/images/stage-logo.png";
 
 export default function LayoutHeader(): JSX.Element {
   return (

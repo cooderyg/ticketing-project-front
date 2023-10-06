@@ -21,6 +21,9 @@ export const Wrapper = styled.div`
 
 export const LogoBox = styled.h1`
   cursor: pointer;
+  > a {
+    height: 40px;
+  }
 `;
 
 export const Nav = styled.nav`

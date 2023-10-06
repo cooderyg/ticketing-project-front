@@ -1,11 +1,18 @@
+import Link from "next/link";
 import * as S from "./loginMiddle.style";
+import Image from "next/image";
+import LogoImage from "../../../../../public/images/sign-logo.png";
 
 export default function LoginMiddle(): JSX.Element {
   return (
     <>
       <S.Container>
         <S.Wrapper>
-          <h1>Stage Pick</h1>
+          <Link href="/">
+            <a>
+              <Image src={LogoImage} />
+            </a>
+          </Link>
           <S.LoginForm>
             <S.TitleBox>
               <S.Label>이메일</S.Label>

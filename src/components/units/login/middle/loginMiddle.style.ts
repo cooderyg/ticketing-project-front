@@ -10,15 +10,18 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 300px;
+  margin-top: 200px;
   min-height: 60vh;
+  @media (max-width: 768px) {
+    margin-top: 100px;
+  }
 `;
 
 export const LoginForm = styled.form`
   width: 420px;
   padding: 32px 40px;
   border: 1px solid ${color.gray};
-  border-radius: 4px;
+  border-radius: 8px;
   @media (max-width: 500px) {
     width: 320px;
     padding: 20px;
@@ -59,6 +62,7 @@ export const SubmitButton = styled.button`
   transition: 0.2s;
   cursor: pointer;
   :hover {
-    background-color: ${color.black};
+    background-color: ${color.secondary};
+    color: ${color.black};
   }
 `;
