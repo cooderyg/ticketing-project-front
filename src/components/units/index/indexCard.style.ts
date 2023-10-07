@@ -3,13 +3,15 @@ import { color } from "../../../commons/styles/color.styles";
 
 export const Container = styled.li`
   width: 400px;
-  height: 180px;
   margin-top: 20px;
   border: 1px solid ${color.gray};
   border-radius: 4px;
   overflow: hidden;
   @media (max-width: 1280px) {
     width: calc(50% - 10px);
+  }
+  @media (max-width: 768px) {
+    width: 100%;
   }
 `;
 
@@ -23,7 +25,7 @@ export const CardWrapper = styled.a`
 export const ImageBox = styled.div`
   position: relative;
   width: 130px;
-  height: 100%;
+  height: 180px;
   padding: 0;
   margin: 0;
 `;

@@ -6,6 +6,13 @@ export const Wrapper = styled.div`
   padding: 0 20px;
 `;
 
+export const Title = styled.h3`
+  padding-top: 50px;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+`;
+
 export const CardBox = styled.ul`
   display: flex;
   justify-content: space-between;
