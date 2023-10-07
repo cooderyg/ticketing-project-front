@@ -1,5 +1,6 @@
 import Head from "next/head";
 import * as S from "../src/components/commons/styles/index.styles";
+import Card from "../src/components/units/index/index.card";
 
 export default function Home() {
   return (
@@ -13,7 +14,13 @@ export default function Home() {
       <S.Wrapper>
         <S.CardBox>
           {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map((el) => (
-            <S.Card key={el}>카드1</S.Card>
+            <Card
+              title="드라큘라"
+              time="11월 11일 오후 4시"
+              description="국무회의는 정부의 권한에 속하는 중요한 정책을 심의한다."
+              cast="박효신, 김준수"
+              key={el}
+            />
           ))}
         </S.CardBox>
       </S.Wrapper>
