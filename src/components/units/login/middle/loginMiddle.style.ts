@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 200px;
-  min-height: 60vh;
+  min-height: 80vh;
   @media (max-width: 768px) {
     margin-top: 100px;
   }
@@ -44,6 +44,7 @@ export const PasswordBox = styled.div`
 
 export const Label = styled.label`
   padding-left: 4px;
+  cursor: pointer;
 `;
 
 export const Input = styled.input`
