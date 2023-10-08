@@ -14,14 +14,14 @@ export default function LoginMiddle(): JSX.Element {
             </a>
           </Link>
           <S.LoginForm>
-            <S.TitleBox>
+            <S.EmailBox>
               <S.Label htmlFor="email">이메일</S.Label>
               <S.Input
                 id="email"
                 type="text"
                 placeholder="이메일을 입력해주세요."
               />
-            </S.TitleBox>
+            </S.EmailBox>
             <S.PasswordBox>
               <S.Label htmlFor="password">비밀번호</S.Label>
               <S.Input
@@ -31,6 +31,9 @@ export default function LoginMiddle(): JSX.Element {
               />
             </S.PasswordBox>
             <S.SubmitButton>로그인</S.SubmitButton>
+            <Link href="/sign-up">
+              <S.Signup>회원가입</S.Signup>
+            </Link>
           </S.LoginForm>
         </S.Wrapper>
       </S.Container>

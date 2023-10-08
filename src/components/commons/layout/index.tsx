@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import LayoutHeader from "./header";
 import LayoutFooter from "./footer";
 
-const HIDDEN_HEADERS: string[] = ["/login"];
+const HIDDEN_HEADERS: string[] = ["/login", "/sign-up"];
 
 interface ILayoutProps {
   children: JSX.Element;
