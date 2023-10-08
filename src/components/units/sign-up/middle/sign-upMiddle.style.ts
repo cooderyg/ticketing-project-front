@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
 import { color } from "../../../../commons/styles/color.styles";
 
+class InputProps {
+  isSignupEmail?: boolean = false;
+}
+
 export const Container = styled.section`
   max-width: 1280px;
   margin: 0 auto;
@@ -17,7 +21,7 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const LoginForm = styled.form`
+export const SignupForm = styled.form`
   width: 420px;
   padding: 32px 40px;
   border: 1px solid ${color.gray};
@@ -28,6 +32,7 @@ export const LoginForm = styled.form`
   }
 `;
 
+// 이메일
 export const EmailBox = styled.div`
   margin-top: 16px;
   display: flex;
@@ -35,6 +40,25 @@ export const EmailBox = styled.div`
   gap: 8px;
 `;
 
+export const EmailWrapper = styled.div`
+  display: flex;
+  gap: 4px;
+`;
+
+export const EmailAuthBtn = styled.button`
+  width: 60px;
+  border-radius: 8px;
+  background-color: ${color.primary};
+  color: ${color.white};
+  transition: 0.2s;
+  cursor: pointer;
+  :hover {
+    background-color: ${color.secondary};
+    color: ${color.black};
+  }
+`;
+
+// 비밀번호
 export const PasswordBox = styled.div`
   margin-top: 16px;
   display: flex;
@@ -47,10 +71,18 @@ export const Label = styled.label`
   cursor: pointer;
 `;
 
-export const Input = styled.input`
+export const Input = styled.input<InputProps>`
+  ${(props) => (props.isSignupEmail ? "width: calc(100% - 60px);" : "")}
   padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid ${color.gray};
+`;
+
+export const NicknameBox = styled.div`
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 export const SubmitButton = styled.button`
@@ -65,16 +97,5 @@ export const SubmitButton = styled.button`
   :hover {
     background-color: ${color.secondary};
     color: ${color.black};
-  }
-`;
-
-export const Signup = styled.a`
-  margin-top: 32px;
-  text-align: center;
-  transition: 0.2s;
-  cursor: pointer;
-
-  :hover {
-    color: ${color.primary};
   }
 `;
