@@ -8,6 +8,12 @@ export const Container = styled.section`
   margin: 100px auto 0;
 `;
 
+export const Subject = styled.h2`
+  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: bold;
+`;
+
 export const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -15,9 +21,10 @@ export const Wrapper = styled.div`
   @media (max-width: 1280px) {
     justify-content: flex-start;
   }
-  @media (max-width: 1024px) {
+  @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
+    gap: 16px;
   }
 `;
 
@@ -43,10 +50,10 @@ export const InfoSeatWrapper = styled.div`
   }
 `;
 
-export const Title = styled.h2`
+export const Title = styled.h3`
   margin-bottom: 32px;
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: bold;
 `;
 
 export const InfoBox = styled.ul`
@@ -111,9 +118,13 @@ export const CancelBtn = styled.button`
   width: 280px;
   margin-top: 40px;
   padding: 17px 20px 16px;
-  border: 1px solid ${color.gray};
   border-radius: 8px;
   color: ${color.white};
   background-color: ${color.primary};
+  transition: 0.2s;
   cursor: pointer;
+  :hover {
+    background-color: ${color.secondary};
+    color: ${color.black};
+  }
 `;
