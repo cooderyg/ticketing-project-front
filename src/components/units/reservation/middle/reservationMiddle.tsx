@@ -5,9 +5,10 @@ import PosterImage from "../../../../../public/images/psy.jpg";
 export default function ReservationMiddle(): JSX.Element {
   return (
     <S.Container>
+      <S.Subject>결제정보</S.Subject>
       <S.Wrapper>
         <S.PosterBox>
-          <Image src={PosterImage} objectFit="contain" />
+          <Image src={PosterImage} objectFit="fill" />
         </S.PosterBox>
         <S.InfoSeatWrapper>
           <S.InfoBox>
