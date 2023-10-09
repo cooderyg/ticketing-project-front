@@ -51,6 +51,9 @@ export const Input = styled.input`
   padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid ${color.gray};
+  :focus {
+    border: 1px solid ${color.primary};
+  }
 `;
 
 export const SubmitButton = styled.button`
