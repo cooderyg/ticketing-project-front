@@ -34,7 +34,7 @@ export const Nav = styled.nav`
     font-weight: bold;
     transition: 0.2s;
     :hover {
-      color: ${color.gray};
+      color: ${color.primary};
     }
   }
 `;
