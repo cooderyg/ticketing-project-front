@@ -30,6 +30,12 @@ export const globalStyles = css`
     outline: none;
   }
 
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
   article,
   aside,
   details,
