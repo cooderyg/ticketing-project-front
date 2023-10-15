@@ -3,6 +3,7 @@ import { color } from "../../../../commons/styles/color.styles";
 
 class InputProps {
   isSignupEmail?: boolean = false;
+  isError?: string;
 }
 
 export const Container = styled.section`
@@ -75,10 +76,19 @@ export const Input = styled.input<InputProps>`
   ${(props) => (props.isSignupEmail ? "width: calc(100% - 60px);" : "")}
   padding: 8px 12px;
   border-radius: 8px;
-  border: 1px solid ${color.gray};
+  ${(props) =>
+    props.isError
+      ? `border: 1px solid ${color.red};`
+      : `border: 1px solid ${color.gray};`}
+
   :focus {
     border: 1px solid ${color.primary};
   }
+`;
+
+export const ErrorMessage = styled.p`
+  padding-left: 4px;
+  color: ${color.red};
 `;
 
 export const NicknameBox = styled.div`
