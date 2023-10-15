@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { ChangeEvent, MouseEvent, useState } from "react";
+import { keydownCheck } from "../../../commons/libs/submitKeydown";
 
 interface ISignupFormData {
   role: ROLE;
@@ -41,7 +42,7 @@ export default function SignupMiddle() {
       resolver: yupResolver(schema),
       mode: "onBlur",
     });
-  const onClickSubmit = (data: ISignupFormData): void => {
+  const onClickSubmit = (data: ISignupFormData) => {
     if (!isEmailValid) {
       alert("이메일을 인증해주세요.");
       return;
@@ -51,7 +52,7 @@ export default function SignupMiddle() {
     createUser(data);
   };
 
-  const onClickSendBtn = (event: MouseEvent<HTMLButtonElement>): void => {
+  const onClickSendBtn = (): void => {
     if (sendMailLoading || formState.errors.email?.message) return;
     const { email } = getValues();
     sendMail(email);
@@ -111,7 +112,10 @@ export default function SignupMiddle() {
               <Image src={LogoImage} />
             </a>
           </Link>
-          <S.SignupForm onSubmit={handleSubmit(onClickSubmit)}>
+          <S.SignupForm
+            onSubmit={handleSubmit(onClickSubmit)}
+            onKeyDown={keydownCheck}
+          >
             <S.RoleBox>
               <input
                 {...register("role")}
