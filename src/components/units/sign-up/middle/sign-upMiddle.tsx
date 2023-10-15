@@ -4,24 +4,103 @@ import LogoImage from "../../../../../public/images/sign-logo.png";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { schema } from "./sign-up.validation";
+import { ROLE, schema } from "./sign-up.validation";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { ChangeEvent, MouseEvent, useState } from "react";
 
 interface ISignupFormData {
+  role: ROLE;
   email: string;
   password: string;
   confirmPassword: string;
   nickname: string;
 }
 
+interface ISentEmail {
+  email: string;
+  number: number | null;
+}
+
+interface ISentEmailResData {
+  number: number;
+}
+
 export default function SignupMiddle() {
-  const { register, handleSubmit, formState } = useForm<ISignupFormData>({
-    resolver: yupResolver(schema),
-    mode: "onBlur",
+  const router = useRouter();
+  const [sentEmailAndNumber, setSentEmailAndNumber] = useState<ISentEmail>({
+    email: "",
+    number: null,
   });
-  console.log(formState.errors);
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isEmailSent, setIsEmailSent] = useState(false);
+  const [emailNumber, setEmailNumber] = useState(0);
+  const { register, handleSubmit, formState, getValues } =
+    useForm<ISignupFormData>({
+      resolver: yupResolver(schema),
+      mode: "onBlur",
+    });
   const onClickSubmit = (data: ISignupFormData): void => {
+    if (!isEmailValid) {
+      alert("이메일을 인증해주세요.");
+      return;
+    }
+    if (createUserLoading) return;
     console.log(data);
+    createUser(data);
   };
+
+  const onClickSendBtn = (event: MouseEvent<HTMLButtonElement>): void => {
+    if (sendMailLoading || formState.errors.email?.message) return;
+    const { email } = getValues();
+    sendMail(email);
+  };
+
+  const onClickCheckBtn = () => {
+    if (!isEmailSent || !sentEmailAndNumber.number) return;
+    if (sentEmailAndNumber.number === emailNumber) {
+      setIsEmailValid(true);
+    } else {
+      alert("인증번호가 일치하지 않습니다!");
+    }
+  };
+
+  const onChangeNumberInput = (event: ChangeEvent<HTMLInputElement>): void => {
+    setEmailNumber(Number(event.target.value));
+  };
+
+  const { mutate: createUser, isLoading: createUserLoading } = useMutation({
+    mutationFn: (formData: ISignupFormData) => {
+      return axios.post("http://localhost:3001/users", formData);
+    },
+    onError: (error: Error) => {
+      console.error(error);
+      alert(error.message);
+    },
+    onSuccess: () => {
+      router.push("/login");
+    },
+  });
+
+  const { mutate: sendMail, isLoading: sendMailLoading } = useMutation({
+    mutationFn: (email: string) => {
+      return axios.post("http://localhost:3001/users/verify-email", { email });
+    },
+    onError: (error: Error) => {
+      alert(error?.message);
+    },
+    onSuccess: (response) => {
+      const { email } = getValues();
+      const { number }: ISentEmailResData = response.data;
+      setSentEmailAndNumber((prev) => ({
+        ...prev,
+        email,
+        number,
+      }));
+      if (!isEmailSent) setIsEmailSent(true);
+    },
+  });
 
   return (
     <>
@@ -33,6 +112,25 @@ export default function SignupMiddle() {
             </a>
           </Link>
           <S.SignupForm onSubmit={handleSubmit(onClickSubmit)}>
+            <S.RoleBox>
+              <input
+                {...register("role")}
+                id="role-user"
+                name="role"
+                type="radio"
+                value="USER"
+                defaultChecked
+              />
+              <label htmlFor="role-user">유저</label>
+              <input
+                {...register("role")}
+                id="role-host"
+                name="role"
+                type="radio"
+                value="HOST"
+              />
+              <label htmlFor="role-host">호스트</label>
+            </S.RoleBox>
             <S.EmailBox>
               <S.Label htmlFor="email">이메일</S.Label>
               <S.EmailWrapper>
@@ -43,11 +141,44 @@ export default function SignupMiddle() {
                   id="email"
                   type="text"
                   placeholder="이메일을 입력해주세요."
+                  disabled={isEmailValid || sendMailLoading}
                 />
-                <S.EmailAuthBtn type="button">인증</S.EmailAuthBtn>
+                <S.EmailBtn
+                  onClick={onClickSendBtn}
+                  disabled={isEmailValid || sendMailLoading}
+                  type="button"
+                >
+                  {sendMailLoading
+                    ? "전송중"
+                    : isEmailSent
+                    ? "재요청"
+                    : "인증메일"}
+                </S.EmailBtn>
               </S.EmailWrapper>
               <S.ErrorMessage>{formState.errors.email?.message}</S.ErrorMessage>
             </S.EmailBox>
+            {isEmailSent && (
+              <S.EmailBox isValidBox={true}>
+                <S.EmailWrapper>
+                  <S.Input
+                    onChange={onChangeNumberInput}
+                    isSignupEmail={true}
+                    id="validNumber"
+                    type="number"
+                    placeholder="인증번호 6자리 입력해주세요."
+                    maxLength={6}
+                    disabled={isEmailValid}
+                  />
+                  <S.EmailBtn
+                    onClick={onClickCheckBtn}
+                    disabled={isEmailValid}
+                    type="button"
+                  >
+                    {isEmailValid ? "인증완료" : "인증"}
+                  </S.EmailBtn>
+                </S.EmailWrapper>
+              </S.EmailBox>
+            )}
             <S.PasswordBox>
               <S.Label htmlFor="password">비밀번호</S.Label>
               <S.Input
@@ -87,7 +218,9 @@ export default function SignupMiddle() {
                 {formState.errors.nickname?.message}
               </S.ErrorMessage>
             </S.NicknameBox>
-            <S.SubmitButton>회원가입</S.SubmitButton>
+            <S.SubmitButton>
+              {createUserLoading ? "로딩중.." : "회원가입"}
+            </S.SubmitButton>
           </S.SignupForm>
         </S.Wrapper>
       </S.Container>

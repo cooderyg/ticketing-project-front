@@ -1,6 +1,12 @@
 import * as yup from "yup";
 
+export enum ROLE {
+  USER = "USER",
+  HOST = "HOST",
+}
+
 export const schema = yup.object({
+  role: yup.mixed<ROLE>().oneOf(Object.values(ROLE)).required(),
   email: yup
     .string()
     .email("이메일 형식에 적합하지 않습니다.")
@@ -13,3 +19,4 @@ export const schema = yup.object({
   confirmPassword: yup.string().required("비밀번호를 확인해주세요."),
   nickname: yup.string().required("닉네임을 입력해주세요."),
 });
+1;
