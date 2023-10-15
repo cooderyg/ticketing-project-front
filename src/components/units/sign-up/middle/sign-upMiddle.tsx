@@ -40,7 +40,7 @@ export default function SignupMiddle() {
   const { register, handleSubmit, formState, getValues } =
     useForm<ISignupFormData>({
       resolver: yupResolver(schema),
-      mode: "onBlur",
+      mode: "onChange",
     });
   const onClickSubmit = (data: ISignupFormData) => {
     if (!isEmailValid) {
