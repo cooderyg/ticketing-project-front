@@ -4,7 +4,7 @@ import LogoImage from "../../../../../public/images/sign-logo.png";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ROLE, schema } from "./sign-up.validation";
+import { ROLE, signupSchema } from "./sign-up.validation";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -39,7 +39,7 @@ export default function SignupMiddle() {
   const [emailNumber, setEmailNumber] = useState(0);
   const { register, handleSubmit, formState, getValues } =
     useForm<ISignupFormData>({
-      resolver: yupResolver(schema),
+      resolver: yupResolver(signupSchema),
       mode: "onChange",
     });
   const onClickSubmit = (data: ISignupFormData) => {

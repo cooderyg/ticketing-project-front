@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
 import { color } from "../../../../commons/styles/color.styles";
 
+interface IInputProps {
+  isError?: string;
+}
+
 export const Container = styled.section`
   max-width: 1280px;
   margin: 0 auto;
@@ -47,13 +51,26 @@ export const Label = styled.label`
   cursor: pointer;
 `;
 
-export const Input = styled.input`
+export const Input = styled.input<IInputProps>`
   padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid ${color.gray};
   :focus {
     border: 1px solid ${color.primary};
   }
+  ${(props) =>
+    props.isError
+      ? `border: 1px solid ${color.red};
+      :focus {
+        border: 1px solid ${color.red};
+      }
+      `
+      : `border: 1px solid ${color.gray};`}
+`;
+
+export const ErrorMessage = styled.p`
+  padding-left: 4px;
+  color: ${color.red};
 `;
 
 export const SubmitButton = styled.button`
@@ -68,6 +85,9 @@ export const SubmitButton = styled.button`
   :hover {
     background-color: ${color.secondary};
     color: ${color.black};
+  }
+  :disabled {
+    cursor: auto;
   }
 `;
 

@@ -5,7 +5,7 @@ export enum ROLE {
   HOST = "HOST",
 }
 
-export const schema = yup.object({
+export const signupSchema = yup.object({
   role: yup.mixed<ROLE>().oneOf(Object.values(ROLE)).required(),
   email: yup
     .string()
@@ -30,4 +30,3 @@ export const schema = yup.object({
     ),
   nickname: yup.string().required("닉네임을 입력해주세요."),
 });
-1;
