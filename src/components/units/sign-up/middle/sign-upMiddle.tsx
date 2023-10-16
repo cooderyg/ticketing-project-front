@@ -6,10 +6,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ROLE, signupSchema } from "./sign-up.validation";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useRouter } from "next/router";
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { keydownCheck } from "../../../commons/libs/submitKeydown";
+import axiosClient from "../../../../commons/axios/axios-client";
+import { useAuth } from "../../../commons/hooks/useAuth";
+import { useRecoilState } from "recoil";
+import { visitedPageState } from "../../../commons/stores";
 
 interface ISignupFormData {
   role: ROLE;
@@ -29,7 +32,12 @@ interface ISentEmailResData {
 }
 
 export default function SignupMiddle() {
+  // 로그인 후 접근시도 할 때 replace
+  const { loggedIn } = useAuth();
+  const [visitedPage] = useRecoilState(visitedPageState);
   const router = useRouter();
+  if (loggedIn) visitedPage ? router.replace(visitedPage) : router.replace("/");
+
   const [sentEmailAndNumber, setSentEmailAndNumber] = useState<ISentEmail>({
     email: "",
     number: null,
@@ -73,7 +81,7 @@ export default function SignupMiddle() {
 
   const { mutate: createUser, isLoading: createUserLoading } = useMutation({
     mutationFn: (formData: ISignupFormData) => {
-      return axios.post("http://localhost:3001/users", formData);
+      return axiosClient.post("/users", formData);
     },
     onError: (error: Error) => {
       console.error(error);
@@ -86,7 +94,7 @@ export default function SignupMiddle() {
 
   const { mutate: sendMail, isLoading: sendMailLoading } = useMutation({
     mutationFn: (email: string) => {
-      return axios.post("http://localhost:3001/users/verify-email", { email });
+      return axiosClient.post("/users/verify-email", { email });
     },
     onError: (error: Error) => {
       alert(error?.message);

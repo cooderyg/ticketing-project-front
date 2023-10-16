@@ -9,9 +9,9 @@ import { loginSchema } from "./login.validation";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { useRecoilState } from "recoil";
-import { accessTokenState } from "../../../commons/stores";
-import { axiosClient } from "../../../../commons/axios/axios-client";
-import { useAuth } from "../../../commons/hooks/useLogin";
+import { accessTokenState, visitedPageState } from "../../../commons/stores";
+import { useAuth } from "../../../commons/hooks/useAuth";
+import axiosClient from "../../../../commons/axios/axios-client";
 
 interface IFormData {
   email: string;
@@ -28,21 +28,21 @@ interface ILoginRes extends AxiosResponse {
 }
 
 export default function LoginMiddle(): JSX.Element {
-  useAuth();
+  // 로그인 후 접근시도 할 때 replace
+  const { loggedIn } = useAuth();
+
   const router = useRouter();
+  const [visitedPage] = useRecoilState(visitedPageState);
+  const [_, setAccessToken] = useRecoilState(accessTokenState);
+
+  if (loggedIn) visitedPage ? router.replace(visitedPage) : router.replace("/");
+
   const { register, handleSubmit, formState } = useForm<IFormData>({
     resolver: yupResolver(loginSchema),
     mode: "onChange",
   });
 
-  const [_, setAccessToken] = useRecoilState(accessTokenState);
-
-  const onClickSubmit = (formData: IFormData): void => {
-    if (isLoading) return;
-    mutate(formData);
-  };
-
-  const { mutate, isLoading } = useMutation({
+  const { mutate: loginMutate, isLoading } = useMutation({
     mutationFn: (formDate: IFormData) => {
       return axiosClient.post("/auth/login", formDate);
     },
@@ -58,11 +58,13 @@ export default function LoginMiddle(): JSX.Element {
 
       // TODO: 배포 https(reverse proxy) 적용 후 cookie에 넣기
       window.localStorage.setItem("refreshToken", refreshToken);
-
-      // TODO: redirect로 변경하기
-      router.push("/");
     },
   });
+
+  const onClickSubmit = (formData: IFormData): void => {
+    if (isLoading) return;
+    loginMutate(formData);
+  };
 
   return (
     <S.Container>
