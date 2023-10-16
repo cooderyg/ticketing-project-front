@@ -11,6 +11,7 @@ import { AxiosResponse } from "axios";
 import { useRecoilState } from "recoil";
 import { accessTokenState } from "../../../commons/stores";
 import { axiosClient } from "../../../../commons/axios/axios-client";
+import { useAuth } from "../../../commons/hooks/useLogin";
 
 interface IFormData {
   email: string;
@@ -27,6 +28,7 @@ interface ILoginRes extends AxiosResponse {
 }
 
 export default function LoginMiddle(): JSX.Element {
+  useAuth();
   const router = useRouter();
   const { register, handleSubmit, formState } = useForm<IFormData>({
     resolver: yupResolver(loginSchema),

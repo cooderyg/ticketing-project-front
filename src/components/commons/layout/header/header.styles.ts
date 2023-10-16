@@ -38,3 +38,14 @@ export const Nav = styled.nav`
     }
   }
 `;
+
+export const LogoutButton = styled.button`
+  padding: 12px 8px;
+  font-weight: bold;
+  color: ${color.black};
+  transition: 0.2s;
+  cursor: pointer;
+  :hover {
+    color: ${color.primary};
+  }
+`;
