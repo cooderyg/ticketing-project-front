@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { color } from "../../../../commons/styles/color.styles";
 
-class InputProps {
+class IInputProps {
   isSignupEmail?: boolean = false;
   isError?: string;
 }
@@ -116,17 +116,21 @@ export const Label = styled.label`
   cursor: pointer;
 `;
 
-export const Input = styled.input<InputProps>`
+export const Input = styled.input<IInputProps>`
   ${(props) => (props.isSignupEmail ? "width: calc(100% - 80px);" : "")}
   padding: 8px 12px;
   border-radius: 8px;
-  ${(props) =>
-    props.isError
-      ? `border: 1px solid ${color.red};`
-      : `border: 1px solid ${color.gray};`}
   :focus {
     border: 1px solid ${color.primary};
   }
+  ${(props) =>
+    props.isError
+      ? `border: 1px solid ${color.red};
+      :focus {
+        border: 1px solid ${color.red};
+      }
+      `
+      : `border: 1px solid ${color.gray};`}
   :disabled {
     opacity: 0.5;
   }

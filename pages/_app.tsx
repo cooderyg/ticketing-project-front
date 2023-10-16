@@ -4,6 +4,8 @@ import { globalStyles } from "../src/commons/styles/global.styles";
 import Layout from "../src/components/commons/layout";
 import Head from "next/head";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { RecoilRoot } from "recoil";
+import "/src/commons/configs/recoil.config.ts";
 
 const queryClient = new QueryClient();
 
@@ -16,12 +18,14 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <QueryClientProvider client={queryClient}>
-        <Global styles={globalStyles} />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </QueryClientProvider>
+      <RecoilRoot>
+        <QueryClientProvider client={queryClient}>
+          <Global styles={globalStyles} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </QueryClientProvider>
+      </RecoilRoot>
     </>
   );
 }
