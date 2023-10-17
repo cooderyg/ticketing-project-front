@@ -2,12 +2,13 @@ import Link from "next/link";
 import * as S from "./header.styles";
 import Image from "next/image";
 import LogoImage from "../../../../../public/images/stage-logo.png";
+import ProfileImage from "../../../../../public/images/profile.jpg";
 import { useRecoilState } from "recoil";
 import { accessTokenState } from "../../stores";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { axiosClient } from "../../../../commons/axios/axios-client";
 import { AxiosResponse } from "axios";
+import axiosClient from "../../../../commons/axios/axios-client";
 
 interface IRefreshData {
   refreshToken: string;
@@ -23,6 +24,8 @@ interface IRefreshRes extends AxiosResponse {
 
 export default function LayoutHeader(): JSX.Element {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
   const onClickLogoutBtn = () => {
     setAccessToken("");
@@ -43,13 +46,14 @@ export default function LayoutHeader(): JSX.Element {
       window.localStorage.removeItem("refreshToken");
     },
   });
+
   useEffect(() => {
     const refreshToken = window.localStorage.getItem("refreshToken");
 
     if (!accessToken && refreshToken) {
       mutate({ refreshToken });
     }
-  }, []);
+  }, [accessToken, mutate]);
   return (
     <S.Header>
       <S.Wrapper>
@@ -77,7 +81,28 @@ export default function LayoutHeader(): JSX.Element {
             <a>콘서트</a>
           </Link>
           {accessToken ? (
-            <S.LogoutButton onClick={onClickLogoutBtn}>로그아웃</S.LogoutButton>
+            <>
+              <S.ProfileImageBox>
+                <Image src={ProfileImage} objectFit="fill" />
+              </S.ProfileImageBox>
+              <S.UserMenuBox>
+                <S.MyWrapper>
+                  <S.Nickname>김홍길동홍길홍길</S.Nickname>
+                  <Link href="/mypage">
+                    <S.Mypage>My 설정</S.Mypage>
+                  </Link>
+                </S.MyWrapper>
+                <S.PointWrapper>
+                  <S.NowPoint>1,000,000 포인트</S.NowPoint>
+                  <S.ChargeButton>충전하기</S.ChargeButton>
+                </S.PointWrapper>
+                <S.LogoutButtonWrapper>
+                  <S.LogoutButton onClick={onClickLogoutBtn}>
+                    로그아웃
+                  </S.LogoutButton>
+                </S.LogoutButtonWrapper>
+              </S.UserMenuBox>
+            </>
           ) : (
             <Link href="/login">
               <a>로그인</a>
