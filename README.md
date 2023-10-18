@@ -2,4 +2,4 @@
 # 빠른 시일 내로 완성하고 Docs 정리하겠습니다. 감사합니다.
 
 # 아키텍쳐
-<img src="https://github.com/cooderyg/ticketing-project-front/assets/123794148/9cd85403-c4f3-4f72-8d66-465739854236"  width="100%"/>
+<img src="https://github.com/cooderyg/ticketing-project-front/assets/123794148/5a252e50-42bc-418f-8d5a-16bcc622b7fb" width="100%" />
