@@ -4,8 +4,13 @@ import Image from "next/image";
 import LogoImage from "../../../../../public/images/stage-logo.png";
 import ProfileImage from "../../../../../public/images/profile.jpg";
 import { useRecoilState } from "recoil";
-import { accessTokenState } from "../../stores";
-import { useEffect, useState } from "react";
+import {
+  accessTokenState,
+  userInfoState,
+  userMenuOpenState,
+  visitedPageState,
+} from "../../stores";
+import { MouseEvent, useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import axiosClient from "../../../../commons/axios/axios-client";
@@ -23,9 +28,19 @@ interface IRefreshRes extends AxiosResponse {
 }
 
 export default function LayoutHeader(): JSX.Element {
+  const [visitedPage] = useRecoilState(visitedPageState);
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+  const [userMenuOpen, setUserMenuOpen] = useRecoilState(userMenuOpenState);
+  const [userInfo, _] = useRecoilState(userInfoState);
 
-  const [isMenuOpen, setMenuOpen] = useState(false);
+  const onClickProfileImage = (event: MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    setUserMenuOpen((prev) => !prev);
+  };
+
+  const onClickUserBox = (event: MouseEvent<HTMLUListElement>) => {
+    event.stopPropagation();
+  };
 
   const onClickLogoutBtn = () => {
     setAccessToken("");
@@ -54,6 +69,11 @@ export default function LayoutHeader(): JSX.Element {
       mutate({ refreshToken });
     }
   }, [accessToken, mutate]);
+
+  useEffect(() => {
+    setUserMenuOpen(false);
+  }, [visitedPage]);
+
   return (
     <S.Header>
       <S.Wrapper>
@@ -82,18 +102,23 @@ export default function LayoutHeader(): JSX.Element {
           </Link>
           {accessToken ? (
             <>
-              <S.ProfileImageBox>
+              <S.ProfileImageBox onClick={onClickProfileImage}>
                 <Image src={ProfileImage} objectFit="fill" />
               </S.ProfileImageBox>
-              <S.UserMenuBox>
+              <S.UserMenuBox
+                onClick={onClickUserBox}
+                userMenuOpen={userMenuOpen}
+              >
                 <S.MyWrapper>
-                  <S.Nickname>김홍길동홍길홍길</S.Nickname>
+                  <S.Nickname>{userInfo.nickname}</S.Nickname>
                   <Link href="/mypage">
                     <S.Mypage>My 설정</S.Mypage>
                   </Link>
                 </S.MyWrapper>
                 <S.PointWrapper>
-                  <S.NowPoint>1,000,000 포인트</S.NowPoint>
+                  <S.NowPoint>
+                    {userInfo.point.toLocaleString()} 포인트
+                  </S.NowPoint>
                   <S.ChargeButton>충전하기</S.ChargeButton>
                 </S.PointWrapper>
                 <S.LogoutButtonWrapper>
