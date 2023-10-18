@@ -21,5 +21,6 @@ export const userInfoState = atom({
     nickname: "",
     profileImageUrl: "",
     point: 0,
+    role: "USER",
   },
 });
