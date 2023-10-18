@@ -45,7 +45,7 @@ export default function LoginMiddle(): JSX.Element {
   const router = useRouter();
   const [visitedPage] = useRecoilState(visitedPageState);
   const [_, setAccessToken] = useRecoilState(accessTokenState);
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [__, setUserInfo] = useRecoilState(userInfoState);
 
   if (loggedIn) visitedPage ? router.replace(visitedPage) : router.replace("/");
 
@@ -69,10 +69,10 @@ export default function LoginMiddle(): JSX.Element {
         ...prev,
         ...userInfo,
       }));
+      window.localStorage.setItem("refreshToken", refreshToken);
       setAccessToken(accessToken);
 
       // TODO: 배포 https(reverse proxy) 적용 후 cookie에 넣기
-      window.localStorage.setItem("refreshToken", refreshToken);
     },
   });
 

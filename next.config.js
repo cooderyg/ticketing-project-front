@@ -3,15 +3,15 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "xxx",
-        port: "",
-        pathname: "/**",
-      },
-    ],
+    domains: ["young-gyu-bucket.s3.ap-northeast-2.amazonaws.com", "*"],
+    // remotePatterns: [
+    //   {
+    //     protocol: "https",
+    //     hostname: "young-gyu-bucket.s3.ap-northeast-2.amazonaws.com",
+    //     port: "",
+    //     pathname: "/images",
+    //   },
+    // ],
   },
 };
-
 module.exports = nextConfig;
