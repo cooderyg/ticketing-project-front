@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
 import { color } from "../../../../commons/styles/color.styles";
 
+interface IUserMenuBoxProps {
+  userMenuOpen: boolean;
+}
+
 export const Header = styled.header`
   border-bottom: 1px solid #ccc;
   position: fixed;
@@ -16,7 +20,7 @@ export const Wrapper = styled.div`
   align-items: center;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 8px 12px 8px 20px;
+  padding: 8px 20px;
 `;
 
 export const LogoBox = styled.h1`
@@ -50,12 +54,12 @@ export const ProfileImageBox = styled.div`
   cursor: pointer;
 `;
 
-export const UserMenuBox = styled.ul`
+export const UserMenuBox = styled.ul<IUserMenuBoxProps>`
   z-index: 999;
   position: absolute;
   top: 44px;
   right: 0;
-  display: flex;
+  ${(props) => (props.userMenuOpen ? "display: flex;" : "display: none;")}
   flex-direction: column;
   align-items: flex-end;
   gap: 12px;
@@ -64,13 +68,12 @@ export const UserMenuBox = styled.ul`
   border: 1px solid ${color.gray};
   border-radius: 4px;
   background-color: ${color.white};
-  li,
-  button,
-  a,
-  span {
+  > li,
+  > li > button,
+  > li > a,
+  > li > span {
     font-size: 12px;
     font-weight: bold;
-    color: ${color.black};
   }
 `;
 
@@ -81,6 +84,7 @@ export const MyWrapper = styled.li`
 
 export const Nickname = styled.span`
   flex: 1;
+  color: ${color.primary};
 `;
 
 export const Mypage = styled.a`

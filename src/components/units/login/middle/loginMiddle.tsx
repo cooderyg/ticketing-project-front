@@ -9,7 +9,11 @@ import { loginSchema } from "./login.validation";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { useRecoilState } from "recoil";
-import { accessTokenState, visitedPageState } from "../../../commons/stores";
+import {
+  accessTokenState,
+  userInfoState,
+  visitedPageState,
+} from "../../../commons/stores";
 import { useAuth } from "../../../commons/hooks/useAuth";
 import axiosClient from "../../../../commons/axios/axios-client";
 
@@ -18,9 +22,16 @@ interface IFormData {
   password: string;
 }
 
+interface IUserInfo {
+  nickname: string;
+  profileImageUrl: string;
+  point: number;
+}
+
 interface ILoginResData {
   accessToken: string;
   refreshToken: string;
+  userInfo: IUserInfo;
 }
 
 interface ILoginRes extends AxiosResponse {
@@ -34,6 +45,7 @@ export default function LoginMiddle(): JSX.Element {
   const router = useRouter();
   const [visitedPage] = useRecoilState(visitedPageState);
   const [_, setAccessToken] = useRecoilState(accessTokenState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
   if (loggedIn) visitedPage ? router.replace(visitedPage) : router.replace("/");
 
@@ -51,9 +63,12 @@ export default function LoginMiddle(): JSX.Element {
     },
     onSuccess: (response: ILoginRes) => {
       const {
-        data: { accessToken, refreshToken },
+        data: { accessToken, refreshToken, userInfo },
       } = response;
-
+      setUserInfo((prev) => ({
+        ...prev,
+        ...userInfo,
+      }));
       setAccessToken(accessToken);
 
       // TODO: 배포 https(reverse proxy) 적용 후 cookie에 넣기

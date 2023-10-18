@@ -3,7 +3,7 @@ import LayoutHeader from "./header";
 import LayoutFooter from "./footer";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { visitedPageState } from "../stores";
+import { userMenuOpenState, visitedPageState } from "../stores";
 
 const HIDDEN_HEADERS: string[] = ["/login", "/sign-up"];
 
@@ -15,19 +15,23 @@ export default function Layout(props: ILayoutProps): JSX.Element {
   const router = useRouter();
 
   const isHiddenHeader = HIDDEN_HEADERS.includes(router.asPath);
-  const [visitedPage, setVisitedPage] = useRecoilState(visitedPageState);
+  const [_, setVisitedPage] = useRecoilState(visitedPageState);
+  const [userMenuOpen, setUserMenuOpen] = useRecoilState(userMenuOpenState);
+
+  const onClickDocument = () => {
+    if (userMenuOpen) setUserMenuOpen(false);
+  };
 
   useEffect(() => {
     const path = router.asPath;
-    if (path === "/login" || "/sign-up") return;
-
+    if (path === "/login" || path === "/sign-up") return;
     setVisitedPage(path);
   }, [router, setVisitedPage]);
   return (
-    <>
+    <div onClick={onClickDocument}>
       {!isHiddenHeader && <LayoutHeader />}
       <main>{props.children}</main>
       <LayoutFooter />
-    </>
+    </div>
   );
 }
