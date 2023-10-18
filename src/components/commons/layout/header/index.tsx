@@ -109,9 +109,14 @@ export default function LayoutHeader(): JSX.Element {
                     width={100}
                     height={100}
                     src={userInfo.profileImageUrl}
+                    alt="프로필 이미지"
                   />
                 ) : (
-                  <Image objectFit="fill" src={ProfileImage} />
+                  <Image
+                    objectFit="fill"
+                    src={ProfileImage}
+                    alt="프로필 이미지"
+                  />
                 )}
               </S.ProfileImageBox>
               <S.UserMenuBox
