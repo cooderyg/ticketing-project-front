@@ -48,7 +48,8 @@ export const Nickname = styled.strong`
 
 export const EditWrapper = styled.div`
   margin-top: 32px;
-  > button:first-child {
+  > button:nth-of-type(1),
+  > button:nth-of-type(2) {
     margin-right: 12px;
   }
 `;
@@ -58,7 +59,17 @@ export const EditBtn = styled.button`
   border: 1px solid ${color.gray};
   border-radius: 4px;
   font-size: 12px;
+  transition: 0.2s;
   cursor: pointer;
+  :hover {
+    background-color: ${color.primary};
+    color: ${color.white};
+    border: 1px solid ${color.primary};
+  }
+`;
+
+export const ImageInput = styled.input`
+  display: none;
 `;
 
 // 예매내역

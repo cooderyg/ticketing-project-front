@@ -103,7 +103,16 @@ export default function LayoutHeader(): JSX.Element {
           {accessToken ? (
             <>
               <S.ProfileImageBox onClick={onClickProfileImage}>
-                <Image src={ProfileImage} objectFit="fill" />
+                {userInfo.profileImageUrl ? (
+                  <Image
+                    objectFit="cover"
+                    width={100}
+                    height={100}
+                    src={userInfo.profileImageUrl}
+                  />
+                ) : (
+                  <Image objectFit="fill" src={ProfileImage} />
+                )}
               </S.ProfileImageBox>
               <S.UserMenuBox
                 onClick={onClickUserBox}
