@@ -14,13 +14,11 @@ import { MouseEvent, useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import axiosClient from "../../../../commons/axios/axios-client";
-
-interface IRefreshData {
-  refreshToken: string;
-}
+import { IUserInfo } from "../../../units/login/middle/loginMiddle";
 
 interface IRefreshResData {
   accessToken: string;
+  userInfo: IUserInfo;
 }
 
 interface IRefreshRes extends AxiosResponse {
@@ -31,7 +29,7 @@ export default function LayoutHeader(): JSX.Element {
   const [visitedPage] = useRecoilState(visitedPageState);
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const [userMenuOpen, setUserMenuOpen] = useRecoilState(userMenuOpenState);
-  const [userInfo, _] = useRecoilState(userInfoState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
   const onClickProfileImage = (event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -49,11 +47,17 @@ export default function LayoutHeader(): JSX.Element {
   };
 
   const { mutate } = useMutation({
-    mutationFn: (data: IRefreshData) => {
-      return axiosClient.post("/auth/refresh", data);
+    mutationFn: (refreshToken: string) => {
+      return axiosClient.post("/auth/refresh", { refreshToken });
     },
     onSuccess: (response: IRefreshRes) => {
-      const { accessToken } = response.data;
+      const { accessToken, userInfo } = response.data;
+
+      setUserInfo((prev) => ({
+        ...prev,
+        ...userInfo,
+      }));
+
       setAccessToken(accessToken);
     },
     onError: () => {
@@ -66,7 +70,7 @@ export default function LayoutHeader(): JSX.Element {
     const refreshToken = window.localStorage.getItem("refreshToken");
 
     if (!accessToken && refreshToken) {
-      mutate({ refreshToken });
+      mutate(refreshToken);
     }
   }, [accessToken, mutate]);
 

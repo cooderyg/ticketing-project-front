@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import { ROLE } from "../../units/sign-up/middle/sign-up.validation";
 
 export const accessTokenState = atom({
   key: "accessToken",
@@ -21,6 +22,6 @@ export const userInfoState = atom({
     nickname: "",
     profileImageUrl: "",
     point: 0,
-    role: "USER",
+    role: ROLE.USER,
   },
 });
