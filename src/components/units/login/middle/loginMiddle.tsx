@@ -16,6 +16,7 @@ import {
 } from "../../../commons/stores";
 import { useAuth } from "../../../commons/hooks/useAuth";
 import axiosClient from "../../../../commons/axios/axios-client";
+import { ROLE } from "../../sign-up/middle/sign-up.validation";
 
 interface IFormData {
   email: string;
@@ -26,6 +27,7 @@ interface IUserInfo {
   nickname: string;
   profileImageUrl: string;
   point: number;
+  role: ROLE;
 }
 
 interface ILoginResData {
