@@ -67,6 +67,7 @@ export default function LoginMiddle(): JSX.Element {
       const {
         data: { accessToken, refreshToken, userInfo },
       } = response;
+      console.log(userInfo);
       setUserInfo((prev) => ({
         ...prev,
         ...userInfo,
