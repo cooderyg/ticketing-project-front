@@ -48,6 +48,7 @@ export const Nav = styled.nav`
 export const ProfileImageBox = styled.div`
   width: 36px;
   height: 36px;
+  margin-left: 40px;
   border: 1px solid ${color.gray};
   border-radius: 50px;
   overflow: hidden;
