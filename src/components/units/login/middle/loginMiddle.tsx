@@ -23,7 +23,7 @@ interface IFormData {
   password: string;
 }
 
-interface IUserInfo {
+export interface IUserInfo {
   nickname: string;
   profileImageUrl: string;
   point: number;
