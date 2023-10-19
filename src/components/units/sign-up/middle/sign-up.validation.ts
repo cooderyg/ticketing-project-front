@@ -28,5 +28,8 @@ export const signupSchema = yup.object({
             .oneOf([yup.ref("password")], "비밀번호가 일치하지 않습니다.")
         : field
     ),
-  nickname: yup.string().required("닉네임을 입력해주세요."),
+  nickname: yup
+    .string()
+    .max(12, "닉네임은 최대 12자리로 입력해주세요.")
+    .required("닉네임을 입력해주세요."),
 });
