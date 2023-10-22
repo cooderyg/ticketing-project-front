@@ -4,11 +4,50 @@ import { keydownCheck } from "../../../commons/libs/submitKeydown";
 import DateInput from "../../inputs/dateInput";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registrationSchema } from "./registration.validation";
+import { useMutation } from "@tanstack/react-query";
+import axiosClient from "../../../../commons/axios/axios-client";
+import { useRecoilState } from "recoil";
+import { accessTokenState } from "../../../commons/stores";
+
+interface IDates {
+  $d: Date;
+}
+
+interface IFormData {
+  // TODO: 확정 후 enum타입으로 변경
+  category: string;
+  title: string;
+  description: string;
+  address: string;
+  dates: IDates[];
+}
 
 export default function RegistrationMiddle(): JSX.Element {
+  const [accessToken] = useRecoilState(accessTokenState);
+
   const { register, handleSubmit, control } = useForm({
     resolver: yupResolver(registrationSchema),
     mode: "onChange",
+  });
+
+  const {} = useMutation({
+    mutationFn: (formData: IFormData) => {
+      const { dates, ...rest } = formData;
+      const startDate = dates[0];
+      const endDate = dates[1];
+
+      const body = {
+        startDate,
+        endDate,
+        ...rest,
+      };
+
+      return axiosClient.post(
+        "",
+        {},
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+    },
   });
 
   const onSubmit = (formdata: any) => {
@@ -65,7 +104,7 @@ export default function RegistrationMiddle(): JSX.Element {
           </S.AddressBox>
           <S.DateWrapper>
             <S.DateBox>
-              <S.Label htmlFor="start-date">예매 기간</S.Label>
+              <S.Label htmlFor="dates">예매 기간</S.Label>
               <Controller
                 control={control}
                 name="dates"
