@@ -62,9 +62,7 @@ export const CategorySelect = styled.select`
   }
 `;
 
-export const Category = styled.option`
-  padding: 8px 12px;
-`;
+export const Category = styled.option``;
 
 export const TitleBox = styled.div`
   flex: 1;
@@ -103,12 +101,6 @@ export const DateWrapper = styled.div`
   }
 `;
 
-export const StartDateBox = styled.div``;
-
-export const StartDateInput = styled.input``;
-
-export const EndDateBox = styled.div``;
-
-export const EndDateInput = styled.input``;
+export const DateBox = styled.div``;
 
 export const RegistrationBtn = styled.button``;
