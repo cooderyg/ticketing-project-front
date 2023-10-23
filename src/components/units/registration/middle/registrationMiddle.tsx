@@ -25,32 +25,30 @@ interface IFormData {
 export default function RegistrationMiddle(): JSX.Element {
   const [accessToken] = useRecoilState(accessTokenState);
 
-  const { register, handleSubmit, control } = useForm({
+  const { register, handleSubmit, control, formState } = useForm({
     resolver: yupResolver(registrationSchema),
     mode: "onChange",
   });
 
-  const {} = useMutation({
+  const { mutate: registrationMutate, isLoading } = useMutation({
     mutationFn: (formData: IFormData) => {
       const { dates, ...rest } = formData;
-      const startDate = dates[0];
-      const endDate = dates[1];
+      const startDate = dates[0]?.$d;
+      const endDate = dates[1]?.$d;
 
-      const body = {
+      const registrationBody = {
         startDate,
         endDate,
         ...rest,
       };
 
-      return axiosClient.post(
-        "",
-        {},
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      );
+      return axiosClient.post("/concerts", registrationBody, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
     },
   });
 
-  const onSubmit = (formdata: any) => {
+  const onSubmit = (formdata: IFormData) => {
     console.log(formdata);
   };
 
@@ -70,37 +68,48 @@ export default function RegistrationMiddle(): JSX.Element {
                 <S.Category>연극</S.Category>
                 <S.Category>콘서트</S.Category>
               </S.CategorySelect>
+              <S.ErrorMessage>
+                {formState.errors.category?.message}
+              </S.ErrorMessage>
             </S.CategoryBox>
             <S.TitleBox>
               <S.Label htmlFor="title">공연 제목</S.Label>
-              <S.TitleInput
+              <S.Input
+                isError={formState.errors.title?.message}
                 {...register("title")}
                 name="title"
                 id="title"
                 type="text"
                 placeholder="제목을 입력하세요."
               />
+              <S.ErrorMessage>{formState.errors.title?.message}</S.ErrorMessage>
             </S.TitleBox>
           </S.CategoryTitleWrapper>
           <S.DescriptionBox>
             <S.Label htmlFor="description">공연 설명</S.Label>
-            <S.DescriptionInput
+            <S.Input
               {...register("description")}
+              isError={formState.errors.description?.message}
               name="description"
               id="description"
               type="text"
               placeholder="설명을 입력하세요."
             />
+            <S.ErrorMessage>
+              {formState.errors.description?.message}
+            </S.ErrorMessage>
           </S.DescriptionBox>
           <S.AddressBox>
             <S.Label htmlFor="address">공연 주소</S.Label>
-            <S.AddressInput
+            <S.Input
               {...register("address")}
+              isError={formState.errors.address?.message}
               name="address"
               id="address"
               type="text"
               placeholder="주소를 입력하세요."
             />
+            <S.ErrorMessage>{formState.errors.address?.message}</S.ErrorMessage>
           </S.AddressBox>
           <S.DateWrapper>
             <S.DateBox>
@@ -109,9 +118,14 @@ export default function RegistrationMiddle(): JSX.Element {
                 control={control}
                 name="dates"
                 render={({ field: { onChange, onBlur } }) => (
-                  <DateInput onChange={onChange} onBlur={onBlur} />
+                  <DateInput
+                    isError={formState.errors.dates?.message}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                  />
                 )}
               />
+              <S.ErrorMessage>{formState.errors.dates?.message}</S.ErrorMessage>
             </S.DateBox>
           </S.DateWrapper>
           <button>등록하기</button>
