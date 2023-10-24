@@ -23,6 +23,10 @@ export const registrationSchema = yup.object({
         .object()
         .shape({
           grade: yup.string().required("등급을 입력해주세요."),
+          price: yup
+            .number()
+            .min(1000, "등급별 최소 좌석수는 1개입니다.")
+            .required("가격을 입력해주세요."),
           quantity: yup
             .number()
             .max(100, "등급별 최대 좌석수는 100개입니다.")
