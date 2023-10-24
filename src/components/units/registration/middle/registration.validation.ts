@@ -16,4 +16,21 @@ export const registrationSchema = yup.object({
         .required("예매기간 입력은 필수입니다.")
     )
     .required("예매기간 입력은 필수입니다."),
+  seats: yup
+    .array()
+    .of(
+      yup
+        .object()
+        .shape({
+          grade: yup.string().required("등급을 입력해주세요."),
+          quantity: yup
+            .number()
+            .max(100, "등급별 최대 좌석수는 100개입니다.")
+            .min(1, "등급별 최소 좌석수는 1개입니다.")
+            .required("좌석 수를 입력해주세요."),
+        })
+        .required("예매기간 입력은 필수입니다.")
+    )
+    .min(1)
+    .required(),
 });
