@@ -8,7 +8,9 @@ import { useMutation } from "@tanstack/react-query";
 import axiosClient from "../../../../commons/axios/axios-client";
 import { useRecoilState } from "recoil";
 import { accessTokenState } from "../../../commons/stores";
-import { useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
+import { validationImageFile } from "../../../commons/libs/validationImageFile";
+import Image from "next/image";
 
 interface IDates {
   $d: Date;
@@ -34,6 +36,12 @@ export default function RegistrationMiddle(): JSX.Element {
 
   const [posterImageUrl, setPosterImageUrl] = useState("");
 
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
+  const onClickEditImage = (): void => {
+    imageInputRef?.current?.click();
+  };
+
   const { register, handleSubmit, control, formState } = useForm({
     resolver: yupResolver(registrationSchema),
     mode: "onChange",
@@ -46,10 +54,40 @@ export default function RegistrationMiddle(): JSX.Element {
 
   fields[0] = {
     grade: "",
-    quantity: 0,
+    quantity: 1,
     id: "seat-quantity-1",
   };
 
+  // 이미지 등록 mutation
+  const { mutate: uploadImageMutate, isLoading: posterImageLoading } =
+    useMutation({
+      mutationFn: (file: FormData) => {
+        return axiosClient.post("/uploads/poster-image", file, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+      },
+      onSuccess: (response) => {
+        const { url } = response.data;
+        setPosterImageUrl(url);
+      },
+      onError: () => {
+        alert("이미지 업로드 중 오류가 발생했습니다.");
+      },
+    });
+
+  const onChangeImage = (event: ChangeEvent<HTMLInputElement>): void => {
+    if (posterImageLoading) return;
+    const file = event.target.files?.[0];
+    const isValid = validationImageFile(file);
+    if (!isValid) return;
+
+    let formData = new FormData();
+
+    if (!file) return;
+    formData.append("file", file);
+    uploadImageMutate(formData);
+  };
+  // 콘서트 등록 mutation
   const { mutate: registrationMutate, isLoading } = useMutation({
     mutationFn: (formData: IFormData) => {
       const { dates, ...rest } = formData;
@@ -158,9 +196,7 @@ export default function RegistrationMiddle(): JSX.Element {
             {fields.map((item, index) => (
               <S.SeatBox key={item.id}>
                 <S.SeatInputBox>
-                  <S.Label paddingTop={6} htmlFor={`seat-grade-${index}`}>
-                    좌석등급
-                  </S.Label>
+                  <S.Label htmlFor={`seat-grade-${index}`}>좌석등급</S.Label>
                   <S.Input
                     {...register(`seats.${index}.grade`)}
                     isError={formState.errors.seats?.[index]?.grade?.message}
@@ -174,11 +210,10 @@ export default function RegistrationMiddle(): JSX.Element {
                   </S.ErrorMessage>
                 </S.SeatInputBox>
                 <S.SeatInputBox>
-                  <S.Label paddingTop={6} htmlFor={`seat-quantity-${index}`}>
-                    좌석수량
-                  </S.Label>
+                  <S.Label htmlFor={`seat-quantity-${index}`}>좌석수량</S.Label>
                   <S.Input
                     {...register(`seats.${index}.quantity`)}
+                    defaultValue={1}
                     isError={formState.errors.seats?.[index]?.quantity?.message}
                     id={`seat-quantity-${index}`}
                     type="number"
@@ -188,22 +223,58 @@ export default function RegistrationMiddle(): JSX.Element {
                       "\u00A0"}
                   </S.ErrorMessage>
                 </S.SeatInputBox>
-                <S.SeatRemoveBtn onClick={() => remove(index)} type="button">
-                  삭제
-                </S.SeatRemoveBtn>
+                {index ? (
+                  <S.SeatRemoveBtn onClick={() => remove(index)} type="button">
+                    삭제
+                  </S.SeatRemoveBtn>
+                ) : (
+                  ""
+                )}
               </S.SeatBox>
             ))}
           </S.SeatWrapper>
           <S.SeatAddBtn
-            onClick={() => append({ grade: "", quantity: 0 })}
+            onClick={() => append({ grade: "", quantity: 1 })}
             type="button"
           >
             좌석추가
           </S.SeatAddBtn>
           <S.PosterImageBox>
-            <S.Input type="file" />
+            <S.Label htmlFor="image-input">포스터 이미지</S.Label>
+            {posterImageUrl ? (
+              <Image
+                onClick={onClickEditImage}
+                objectFit="contain"
+                width={200}
+                height={200}
+                src={posterImageUrl}
+                alt="프로필 이미지"
+              />
+            ) : (
+              <svg
+                onClick={onClickEditImage}
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                />
+              </svg>
+            )}
+
+            <S.Input
+              onChange={onChangeImage}
+              id="image-input"
+              type="file"
+              ref={imageInputRef}
+            />
           </S.PosterImageBox>
-          <button>등록하기</button>
+          <S.RegistrationBtn>등록하기</S.RegistrationBtn>
         </S.RegistrationForm>
       </S.Wrapper>
     </S.Container>
