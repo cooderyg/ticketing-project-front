@@ -82,10 +82,7 @@ export default function MypageMiddle(): JSX.Element {
     if (uploadImageLoading) return;
     const file = event.target.files?.[0];
     const isValid = validationImageFile(file);
-    if (!isValid) {
-      alert("png, jpeg(jpg)파일만 가능합니다. 파일용량은 최대 5MB입니다.");
-      return;
-    }
+    if (!isValid) return;
     let formData = new FormData();
 
     if (!file) return;

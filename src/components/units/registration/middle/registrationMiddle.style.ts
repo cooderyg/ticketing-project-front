@@ -1,10 +1,6 @@
 import styled from "@emotion/styled";
 import { color } from "../../../../commons/styles/color.styles";
 
-interface ILabelProrps {
-  paddingTop?: number;
-}
-
 interface IInputProps {
   isError?: string;
 }
@@ -25,8 +21,7 @@ export const Subject = styled.h2`
   font-weight: bold;
 `;
 
-export const Label = styled.label<ILabelProrps>`
-  ${(props) => (props.paddingTop ? `padding-top: ${props.paddingTop}px;` : "")}
+export const Label = styled.label`
   padding-right: 20px;
   font-size: 20px;
   cursor: pointer;
@@ -125,6 +120,9 @@ export const SeatBox = styled.li`
 export const SeatInputBox = styled.div`
   width: calc(50% - 48px);
   margin-bottom: 16px;
+  > label {
+    padding-top: 6px;
+  }
   > input {
     width: calc(100% - 90px);
   }
@@ -141,7 +139,7 @@ export const SeatRemoveBtn = styled.button`
 
 export const SeatAddBtn = styled.button`
   display: block;
-  margin: 0 auto;
+  margin: 0 auto 40px;
   padding: 8px;
   font-size: 16px;
   background-color: ${color.primary};
@@ -151,9 +149,27 @@ export const SeatAddBtn = styled.button`
 `;
 
 export const PosterImageBox = styled.div`
+  display: flex;
   input {
     display: none;
   }
+  svg {
+    width: 200px;
+    color: ${color.primary};
+    cursor: pointer;
+  }
+  img {
+    cursor: pointer;
+  }
 `;
 
-export const RegistrationBtn = styled.button``;
+export const RegistrationBtn = styled.button`
+  width: 200px;
+  display: block;
+  margin: 80px auto 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: ${color.primary};
+  color: ${color.white};
+  cursor: pointer;
+`;
