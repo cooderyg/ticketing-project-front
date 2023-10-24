@@ -11,6 +11,7 @@ import { accessTokenState } from "../../../commons/stores";
 import { ChangeEvent, useRef, useState } from "react";
 import { validationImageFile } from "../../../commons/libs/validationImageFile";
 import Image from "next/image";
+import { AxiosResponse } from "axios";
 
 interface IDates {
   $d: Date;
@@ -18,6 +19,7 @@ interface IDates {
 
 interface ISeat {
   grade: string;
+  price: number;
   quantity: number;
 }
 
@@ -31,10 +33,14 @@ interface IFormData {
   seats: ISeat[];
 }
 
-export default function RegistrationMiddle(): JSX.Element {
-  const [accessToken] = useRecoilState(accessTokenState);
+interface IRegistrationResData {}
 
-  const [posterImageUrl, setPosterImageUrl] = useState("");
+interface IRegistrationRes extends AxiosResponse {}
+
+export default function RegistrationMiddle(): JSX.Element {
+  const [accessToken] = useRecoilState<string>(accessTokenState);
+
+  const [posterImageUrl, setPosterImageUrl] = useState<string>("");
 
   const imageInputRef = useRef<HTMLInputElement>(null);
 
@@ -54,6 +60,7 @@ export default function RegistrationMiddle(): JSX.Element {
 
   fields[0] = {
     grade: "",
+    price: 10000,
     quantity: 1,
     id: "seat-quantity-1",
   };
@@ -202,10 +209,25 @@ export default function RegistrationMiddle(): JSX.Element {
                     isError={formState.errors.seats?.[index]?.grade?.message}
                     id={`seat-grade-${index}`}
                     type="text"
-                    placeholder="좌석등급을 입력해주세요."
+                    placeholder="ex) a, b, vip"
                   />
                   <S.ErrorMessage>
                     {formState.errors.seats?.[index]?.grade?.message ??
+                      "\u00A0"}
+                  </S.ErrorMessage>
+                </S.SeatInputBox>
+                <S.SeatInputBox>
+                  <S.Label htmlFor={`seat-price-${index}`}>좌석가격</S.Label>
+                  <S.Input
+                    {...register(`seats.${index}.price`)}
+                    defaultValue={10000}
+                    isError={formState.errors.seats?.[index]?.price?.message}
+                    id={`seat-price-${index}`}
+                    type="number"
+                    placeholder="ex) 10000"
+                  />
+                  <S.ErrorMessage>
+                    {formState.errors.seats?.[index]?.price?.message ??
                       "\u00A0"}
                   </S.ErrorMessage>
                 </S.SeatInputBox>
@@ -217,6 +239,7 @@ export default function RegistrationMiddle(): JSX.Element {
                     isError={formState.errors.seats?.[index]?.quantity?.message}
                     id={`seat-quantity-${index}`}
                     type="number"
+                    placeholder="ex) 100"
                   />
                   <S.ErrorMessage>
                     {formState.errors.seats?.[index]?.quantity?.message ??
@@ -234,7 +257,7 @@ export default function RegistrationMiddle(): JSX.Element {
             ))}
           </S.SeatWrapper>
           <S.SeatAddBtn
-            onClick={() => append({ grade: "", quantity: 1 })}
+            onClick={() => append({ grade: "", price: 10000, quantity: 1 })}
             type="button"
           >
             좌석추가
@@ -256,7 +279,7 @@ export default function RegistrationMiddle(): JSX.Element {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                strokeWidth={1.5}
+                strokeWidth={1}
                 stroke="currentColor"
               >
                 <path

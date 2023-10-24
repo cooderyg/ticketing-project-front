@@ -118,7 +118,7 @@ export const SeatBox = styled.li`
 `;
 
 export const SeatInputBox = styled.div`
-  width: calc(50% - 48px);
+  width: calc(33% - 48px);
   margin-bottom: 16px;
   > label {
     padding-top: 6px;
@@ -167,7 +167,7 @@ export const RegistrationBtn = styled.button`
   width: 200px;
   display: block;
   margin: 80px auto 0;
-  padding: 8px 12px;
+  padding: 12px 16px;
   border-radius: 8px;
   background-color: ${color.primary};
   color: ${color.white};
