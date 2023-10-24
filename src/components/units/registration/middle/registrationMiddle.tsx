@@ -1,4 +1,4 @@
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 import * as S from "./registrationMiddle.style";
 import { keydownCheck } from "../../../commons/libs/submitKeydown";
 import DateInput from "../../inputs/dateInput";
@@ -8,9 +8,15 @@ import { useMutation } from "@tanstack/react-query";
 import axiosClient from "../../../../commons/axios/axios-client";
 import { useRecoilState } from "recoil";
 import { accessTokenState } from "../../../commons/stores";
+import { useState } from "react";
 
 interface IDates {
   $d: Date;
+}
+
+interface ISeat {
+  grade: string;
+  quantity: number;
 }
 
 interface IFormData {
@@ -20,15 +26,29 @@ interface IFormData {
   description: string;
   address: string;
   dates: IDates[];
+  seats: ISeat[];
 }
 
 export default function RegistrationMiddle(): JSX.Element {
   const [accessToken] = useRecoilState(accessTokenState);
 
+  const [posterImageUrl, setPosterImageUrl] = useState("");
+
   const { register, handleSubmit, control, formState } = useForm({
     resolver: yupResolver(registrationSchema),
     mode: "onChange",
   });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "seats",
+  });
+
+  fields[0] = {
+    grade: "",
+    quantity: 0,
+    id: "seat-quantity-1",
+  };
 
   const { mutate: registrationMutate, isLoading } = useMutation({
     mutationFn: (formData: IFormData) => {
@@ -69,7 +89,7 @@ export default function RegistrationMiddle(): JSX.Element {
                 <S.Category>콘서트</S.Category>
               </S.CategorySelect>
               <S.ErrorMessage>
-                {formState.errors.category?.message}
+                {formState.errors.category?.message ?? "\u00A0"}
               </S.ErrorMessage>
             </S.CategoryBox>
             <S.TitleBox>
@@ -82,7 +102,9 @@ export default function RegistrationMiddle(): JSX.Element {
                 type="text"
                 placeholder="제목을 입력하세요."
               />
-              <S.ErrorMessage>{formState.errors.title?.message}</S.ErrorMessage>
+              <S.ErrorMessage>
+                {formState.errors.title?.message ?? "\u00A0"}
+              </S.ErrorMessage>
             </S.TitleBox>
           </S.CategoryTitleWrapper>
           <S.DescriptionBox>
@@ -96,7 +118,7 @@ export default function RegistrationMiddle(): JSX.Element {
               placeholder="설명을 입력하세요."
             />
             <S.ErrorMessage>
-              {formState.errors.description?.message}
+              {formState.errors.description?.message ?? "\u00A0"}
             </S.ErrorMessage>
           </S.DescriptionBox>
           <S.AddressBox>
@@ -109,7 +131,9 @@ export default function RegistrationMiddle(): JSX.Element {
               type="text"
               placeholder="주소를 입력하세요."
             />
-            <S.ErrorMessage>{formState.errors.address?.message}</S.ErrorMessage>
+            <S.ErrorMessage>
+              {formState.errors.address?.message ?? "\u00A0"}
+            </S.ErrorMessage>
           </S.AddressBox>
           <S.DateWrapper>
             <S.DateBox>
@@ -125,9 +149,60 @@ export default function RegistrationMiddle(): JSX.Element {
                   />
                 )}
               />
-              <S.ErrorMessage>{formState.errors.dates?.message}</S.ErrorMessage>
+              <S.ErrorMessage>
+                {formState.errors.dates?.message ?? "\u00A0"}
+              </S.ErrorMessage>
             </S.DateBox>
           </S.DateWrapper>
+          <S.SeatWrapper>
+            {fields.map((item, index) => (
+              <S.SeatBox key={item.id}>
+                <S.SeatInputBox>
+                  <S.Label paddingTop={6} htmlFor={`seat-grade-${index}`}>
+                    좌석등급
+                  </S.Label>
+                  <S.Input
+                    {...register(`seats.${index}.grade`)}
+                    isError={formState.errors.seats?.[index]?.grade?.message}
+                    id={`seat-grade-${index}`}
+                    type="text"
+                    placeholder="좌석등급을 입력해주세요."
+                  />
+                  <S.ErrorMessage>
+                    {formState.errors.seats?.[index]?.grade?.message ??
+                      "\u00A0"}
+                  </S.ErrorMessage>
+                </S.SeatInputBox>
+                <S.SeatInputBox>
+                  <S.Label paddingTop={6} htmlFor={`seat-quantity-${index}`}>
+                    좌석수량
+                  </S.Label>
+                  <S.Input
+                    {...register(`seats.${index}.quantity`)}
+                    isError={formState.errors.seats?.[index]?.quantity?.message}
+                    id={`seat-quantity-${index}`}
+                    type="number"
+                  />
+                  <S.ErrorMessage>
+                    {formState.errors.seats?.[index]?.quantity?.message ??
+                      "\u00A0"}
+                  </S.ErrorMessage>
+                </S.SeatInputBox>
+                <S.SeatRemoveBtn onClick={() => remove(index)} type="button">
+                  삭제
+                </S.SeatRemoveBtn>
+              </S.SeatBox>
+            ))}
+          </S.SeatWrapper>
+          <S.SeatAddBtn
+            onClick={() => append({ grade: "", quantity: 0 })}
+            type="button"
+          >
+            좌석추가
+          </S.SeatAddBtn>
+          <S.PosterImageBox>
+            <S.Input type="file" />
+          </S.PosterImageBox>
           <button>등록하기</button>
         </S.RegistrationForm>
       </S.Wrapper>
