@@ -248,7 +248,20 @@ export default function RegistrationMiddle(): JSX.Element {
                 </S.SeatInputBox>
                 {index ? (
                   <S.SeatRemoveBtn onClick={() => remove(index)} type="button">
-                    삭제
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
                   </S.SeatRemoveBtn>
                 ) : (
                   ""
@@ -256,11 +269,22 @@ export default function RegistrationMiddle(): JSX.Element {
               </S.SeatBox>
             ))}
           </S.SeatWrapper>
-          <S.SeatAddBtn
-            onClick={() => append({ grade: "", price: 10000, quantity: 1 })}
-            type="button"
-          >
-            좌석추가
+          <S.SeatAddBtn type="button">
+            <svg
+              onClick={() => append({ grade: "", price: 10000, quantity: 1 })}
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
           </S.SeatAddBtn>
           <S.PosterImageBox>
             <S.Label htmlFor="image-input">포스터 이미지</S.Label>
@@ -271,7 +295,7 @@ export default function RegistrationMiddle(): JSX.Element {
                 width={200}
                 height={200}
                 src={posterImageUrl}
-                alt="프로필 이미지"
+                alt="포스터 이미지"
               />
             ) : (
               <svg
