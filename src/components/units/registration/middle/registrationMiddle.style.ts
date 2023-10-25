@@ -108,6 +108,9 @@ export const DateBox = styled.div`
   > div {
     width: calc(100% - 130px);
   }
+  > label {
+    cursor: auto;
+  }
 `;
 
 export const SeatWrapper = styled.ul``;
@@ -118,7 +121,7 @@ export const SeatBox = styled.li`
 `;
 
 export const SeatInputBox = styled.div`
-  width: calc(33% - 48px);
+  width: calc(33% - 36px);
   margin-bottom: 16px;
   > label {
     padding-top: 6px;
@@ -129,22 +132,17 @@ export const SeatInputBox = styled.div`
 `;
 
 export const SeatRemoveBtn = styled.button`
-  height: 36px;
-  padding: 0 8px;
-  border-radius: 4px;
-  color: ${color.white};
-  background-color: ${color.primary};
+  width: 40px;
+  height: 40px;
+  color: ${color.primary};
   cursor: pointer;
 `;
 
 export const SeatAddBtn = styled.button`
   display: block;
   margin: 0 auto 40px;
-  padding: 8px;
-  font-size: 16px;
-  background-color: ${color.primary};
-  color: ${color.white};
-  border-radius: 8px;
+  width: 40px;
+  color: ${color.primary};
   cursor: pointer;
 `;
 
