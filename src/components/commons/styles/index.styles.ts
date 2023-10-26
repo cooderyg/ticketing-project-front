@@ -2,8 +2,8 @@ import styled from "@emotion/styled";
 
 export const Wrapper = styled.div`
   max-width: 1280px;
-  margin: 61px auto 80px;
-  padding: 0 20px;
+  margin: 0 auto 80px;
+  padding: 32px 0 20px;
 `;
 
 export const Title = styled.h3`
