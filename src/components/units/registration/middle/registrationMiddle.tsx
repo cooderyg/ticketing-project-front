@@ -12,25 +12,26 @@ import { ChangeEvent, useRef, useState } from "react";
 import { validationImageFile } from "../../../commons/libs/validationImageFile";
 import Image from "next/image";
 import { AxiosResponse } from "axios";
+import { dateToValue } from "../../../commons/libs/dateToValue";
 
 interface IDates {
   $d: Date;
 }
 
-interface ISeat {
+interface ISeatInfo {
   grade: string;
   price: number;
-  quantity: number;
+  seatNumMax: number;
 }
 
 interface IFormData {
   // TODO: 확정 후 enum타입으로 변경
-  category: string;
-  title: string;
+  categoryId: string;
+  name: string;
   description: string;
   address: string;
   dates: IDates[];
-  seats: ISeat[];
+  seatInfo: ISeatInfo[];
 }
 
 interface IRegistrationResData {}
@@ -55,18 +56,18 @@ export default function RegistrationMiddle(): JSX.Element {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "seats",
+    name: "seatInfo",
   });
 
   fields[0] = {
     grade: "",
     price: 10000,
-    quantity: 1,
-    id: "seat-quantity-1",
+    seatNumMax: 1,
+    id: "seat-seatNumMax-1",
   };
 
   // 이미지 등록 mutation
-  const { mutate: uploadImageMutate, isLoading: posterImageLoading } =
+  const { mutate: uploadImageMutate, isLoading: posterImageMutateLoading } =
     useMutation({
       mutationFn: (file: FormData) => {
         return axiosClient.post("/uploads/poster-image", file, {
@@ -83,7 +84,7 @@ export default function RegistrationMiddle(): JSX.Element {
     });
 
   const onChangeImage = (event: ChangeEvent<HTMLInputElement>): void => {
-    if (posterImageLoading) return;
+    if (posterImageMutateLoading) return;
     const file = event.target.files?.[0];
     const isValid = validationImageFile(file);
     if (!isValid) return;
@@ -95,26 +96,42 @@ export default function RegistrationMiddle(): JSX.Element {
     uploadImageMutate(formData);
   };
   // 콘서트 등록 mutation
-  const { mutate: registrationMutate, isLoading } = useMutation({
+  const {
+    mutate: concertRegistrationMutate,
+    isLoading: concertRegistrationMutateLoading,
+  } = useMutation({
     mutationFn: (formData: IFormData) => {
       const { dates, ...rest } = formData;
-      const startDate = dates[0]?.$d;
-      const endDate = dates[1]?.$d;
+      const startDate = dateToValue(dates[0]?.$d);
+      const endDate = dateToValue(dates[1]?.$d);
+      const concertDate = endDate + 60 * 60 * 24;
 
       const registrationBody = {
         startDate,
         endDate,
+        concertDate,
         ...rest,
+        imageUrl: posterImageUrl,
+        // TODO: 카테고리 확정 후 하드코딩 변경하기
+        categoryId: "239ad8a4-7626-4f15-ba69-5db0b5b74654",
       };
-
       return axiosClient.post("/concerts", registrationBody, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
     },
+    onSuccess: (response) => {
+      // TODO: ID만 받아서 host 페이지 공연관리 혹은 detailpage로 넘기기
+      console.log(response.data);
+    },
+    onError: (error) => {
+      console.log(error);
+      alert("등록 에러가 발생했습니다. 다시 시도해주세요.");
+    },
   });
 
   const onSubmit = (formdata: IFormData) => {
-    console.log(formdata);
+    if (concertRegistrationMutateLoading) return;
+    concertRegistrationMutate(formdata);
   };
 
   return (
@@ -125,33 +142,33 @@ export default function RegistrationMiddle(): JSX.Element {
           onSubmit={handleSubmit(onSubmit)}
           onKeyDown={keydownCheck}
         >
-          <S.CategoryTitleWrapper>
+          <S.CategoryNameWrapper>
             <S.CategoryBox>
               <S.Label>카테고리</S.Label>
-              <S.CategorySelect {...register("category")}>
+              <S.CategorySelect {...register("categoryId")}>
                 <S.Category>뮤지컬</S.Category>
                 <S.Category>연극</S.Category>
                 <S.Category>콘서트</S.Category>
               </S.CategorySelect>
               <S.ErrorMessage>
-                {formState.errors.category?.message ?? "\u00A0"}
+                {formState.errors.categoryId?.message ?? "\u00A0"}
               </S.ErrorMessage>
             </S.CategoryBox>
-            <S.TitleBox>
-              <S.Label htmlFor="title">공연 제목</S.Label>
+            <S.NameBox>
+              <S.Label htmlFor="name">공연 이름</S.Label>
               <S.Input
-                isError={formState.errors.title?.message}
-                {...register("title")}
-                name="title"
-                id="title"
+                isError={formState.errors.name?.message}
+                {...register("name")}
+                name="name"
+                id="name"
                 type="text"
                 placeholder="제목을 입력하세요."
               />
               <S.ErrorMessage>
-                {formState.errors.title?.message ?? "\u00A0"}
+                {formState.errors.name?.message ?? "\u00A0"}
               </S.ErrorMessage>
-            </S.TitleBox>
-          </S.CategoryTitleWrapper>
+            </S.NameBox>
+          </S.CategoryNameWrapper>
           <S.DescriptionBox>
             <S.Label htmlFor="description">공연 설명</S.Label>
             <S.Input
@@ -205,44 +222,48 @@ export default function RegistrationMiddle(): JSX.Element {
                 <S.SeatInputBox>
                   <S.Label htmlFor={`seat-grade-${index}`}>좌석등급</S.Label>
                   <S.Input
-                    {...register(`seats.${index}.grade`)}
-                    isError={formState.errors.seats?.[index]?.grade?.message}
+                    {...register(`seatInfo.${index}.grade`)}
+                    isError={formState.errors.seatInfo?.[index]?.grade?.message}
                     id={`seat-grade-${index}`}
                     type="text"
                     placeholder="ex) a, b, vip"
                   />
                   <S.ErrorMessage>
-                    {formState.errors.seats?.[index]?.grade?.message ??
+                    {formState.errors.seatInfo?.[index]?.grade?.message ??
                       "\u00A0"}
                   </S.ErrorMessage>
                 </S.SeatInputBox>
                 <S.SeatInputBox>
                   <S.Label htmlFor={`seat-price-${index}`}>좌석가격</S.Label>
                   <S.Input
-                    {...register(`seats.${index}.price`)}
+                    {...register(`seatInfo.${index}.price`)}
                     defaultValue={10000}
-                    isError={formState.errors.seats?.[index]?.price?.message}
+                    isError={formState.errors.seatInfo?.[index]?.price?.message}
                     id={`seat-price-${index}`}
                     type="number"
                     placeholder="ex) 10000"
                   />
                   <S.ErrorMessage>
-                    {formState.errors.seats?.[index]?.price?.message ??
+                    {formState.errors.seatInfo?.[index]?.price?.message ??
                       "\u00A0"}
                   </S.ErrorMessage>
                 </S.SeatInputBox>
                 <S.SeatInputBox>
-                  <S.Label htmlFor={`seat-quantity-${index}`}>좌석수량</S.Label>
+                  <S.Label htmlFor={`seat-seatNumMax-${index}`}>
+                    좌석수량
+                  </S.Label>
                   <S.Input
-                    {...register(`seats.${index}.quantity`)}
+                    {...register(`seatInfo.${index}.seatNumMax`)}
                     defaultValue={1}
-                    isError={formState.errors.seats?.[index]?.quantity?.message}
-                    id={`seat-quantity-${index}`}
+                    isError={
+                      formState.errors.seatInfo?.[index]?.seatNumMax?.message
+                    }
+                    id={`seat-seatNumMax-${index}`}
                     type="number"
                     placeholder="ex) 100"
                   />
                   <S.ErrorMessage>
-                    {formState.errors.seats?.[index]?.quantity?.message ??
+                    {formState.errors.seatInfo?.[index]?.seatNumMax?.message ??
                       "\u00A0"}
                   </S.ErrorMessage>
                 </S.SeatInputBox>
@@ -271,7 +292,7 @@ export default function RegistrationMiddle(): JSX.Element {
           </S.SeatWrapper>
           <S.SeatAddBtn type="button">
             <svg
-              onClick={() => append({ grade: "", price: 10000, quantity: 1 })}
+              onClick={() => append({ grade: "", price: 10000, seatNumMax: 1 })}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
