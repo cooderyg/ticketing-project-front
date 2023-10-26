@@ -1,8 +1,8 @@
 import * as yup from "yup";
 
 export const registrationSchema = yup.object({
-  category: yup.string().required("카테고리 선택은 필수입니다."),
-  title: yup.string().required("제목을 입력해주세요."),
+  categoryId: yup.string().required("카테고리 선택은 필수입니다."),
+  name: yup.string().required("제목을 입력해주세요."),
   description: yup.string().required("설명을 입력해주세요."),
   address: yup.string().required("주소를 입력해주세요."),
   dates: yup
@@ -16,7 +16,7 @@ export const registrationSchema = yup.object({
         .required("예매기간 입력은 필수입니다.")
     )
     .required("예매기간 입력은 필수입니다."),
-  seats: yup
+  seatInfo: yup
     .array()
     .of(
       yup
@@ -27,7 +27,7 @@ export const registrationSchema = yup.object({
             .number()
             .min(1000, "등급별 최소 좌석수는 1개입니다.")
             .required("가격을 입력해주세요."),
-          quantity: yup
+          seatNumMax: yup
             .number()
             .max(100, "등급별 최대 좌석수는 100개입니다.")
             .min(1, "등급별 최소 좌석수는 1개입니다.")

@@ -50,7 +50,7 @@ export const RegistrationForm = styled.form`
   border-radius: 8px;
 `;
 
-export const CategoryTitleWrapper = styled.div`
+export const CategoryNameWrapper = styled.div`
   display: flex;
   gap: 16px;
   margin-bottom: 40px;
@@ -77,7 +77,7 @@ export const CategorySelect = styled.select`
 
 export const Category = styled.option``;
 
-export const TitleBox = styled.div`
+export const NameBox = styled.div`
   flex: 1;
   > input {
     width: calc(100% - 95px);
