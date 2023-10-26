@@ -2,10 +2,12 @@ import Head from "next/head";
 import * as S from "../src/components/commons/styles/index.styles";
 import Card from "../src/components/units/index/index.card";
 import { Fragment } from "react";
+import MainCarousel from "../src/components/units/carousel/mainCarousel";
 
 export default function Home() {
   return (
     <Fragment>
+      <MainCarousel />
       <S.Wrapper>
         <S.Title>티켓오픈</S.Title>
         <S.CardBox>
