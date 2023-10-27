@@ -3,8 +3,17 @@ import * as S from "../src/components/commons/styles/index.styles";
 import Card from "../src/components/units/index/index.card";
 import { Fragment } from "react";
 import MainCarousel from "../src/components/units/carousel/mainCarousel";
+import { useQuery } from "@tanstack/react-query";
+import axiosClient from "../src/commons/axios/axios-client";
 
 export default function Home() {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["concerts"],
+    queryFn: () => {
+      return axiosClient.get("concerts");
+    },
+  });
+  console.log(data);
   return (
     <Fragment>
       <MainCarousel />
