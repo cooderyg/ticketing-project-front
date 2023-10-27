@@ -105,7 +105,7 @@ export default function RegistrationMiddle(): JSX.Element {
       const { dates, ...rest } = formData;
       const startDate = dateToValue(dates[0]?.$d);
       const endDate = dateToValue(dates[1]?.$d);
-      const concertDate = endDate + 60 * 60 * 24;
+      const concertDate = endDate + 60 * 60 * 24 * 1000;
 
       const registrationBody = {
         startDate,
