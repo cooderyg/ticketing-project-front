@@ -7,8 +7,8 @@ import { registrationSchema } from "./registration.validation";
 import { useMutation } from "@tanstack/react-query";
 import axiosClient from "../../../../commons/axios/axios-client";
 import { useRecoilState } from "recoil";
-import { accessTokenState } from "../../../commons/stores";
-import { ChangeEvent, useRef, useState } from "react";
+import { accessTokenState, userInfoState } from "../../../commons/stores";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { validationImageFile } from "../../../commons/libs/validationImageFile";
 import Image from "next/image";
 import { AxiosResponse } from "axios";
@@ -67,6 +67,7 @@ export default function RegistrationMiddle(): JSX.Element {
   };
 
   // 이미지 등록 mutation
+
   const { mutate: uploadImageMutate, isLoading: posterImageMutateLoading } =
     useMutation({
       mutationFn: (file: FormData) => {
