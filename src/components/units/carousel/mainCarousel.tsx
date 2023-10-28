@@ -11,18 +11,18 @@ const contentStyle: React.CSSProperties = {
 
 export default function MainCarousel(): JSX.Element {
   return (
-    <Carousel autoplay style={{ marginTop: 61 }}>
+    <Carousel autoplay>
       <div>
-        <h3 style={contentStyle}>1</h3>
+        <h3 style={contentStyle}>강영규의 포트폴리오입니다.</h3>
       </div>
       <div>
-        <h3 style={contentStyle}>2</h3>
+        <h3 style={contentStyle}>강영규의 포트폴리오입니다.</h3>
       </div>
       <div>
-        <h3 style={contentStyle}>3</h3>
+        <h3 style={contentStyle}>강영규의 포트폴리오입니다.</h3>
       </div>
       <div>
-        <h3 style={contentStyle}>4</h3>
+        <h3 style={contentStyle}>강영규의 포트폴리오입니다.</h3>
       </div>
     </Carousel>
   );

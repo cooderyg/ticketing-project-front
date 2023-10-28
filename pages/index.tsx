@@ -16,7 +16,9 @@ export default function Home() {
   console.log(data);
   return (
     <Fragment>
-      <MainCarousel />
+      <S.CarouselWrapper>
+        <MainCarousel />
+      </S.CarouselWrapper>
       <S.Wrapper>
         <S.Title>티켓오픈</S.Title>
         <S.CardBox>

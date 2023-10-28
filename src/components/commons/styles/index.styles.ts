@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
 
-export const Wrapper = styled.div`
+export const CarouselWrapper = styled.section`
+  margin-top: 61px;
+`;
+
+export const Wrapper = styled.section`
   max-width: 1280px;
   margin: 0 auto 80px;
   padding: 32px 0 20px;
