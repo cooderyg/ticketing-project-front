@@ -143,33 +143,57 @@ export default function RegistrationMiddle(): JSX.Element {
           onSubmit={handleSubmit(onSubmit)}
           onKeyDown={keydownCheck}
         >
-          <S.CategoryNameWrapper>
+          <S.SelectRunningTimeWrapper>
             <S.CategoryBox>
               <S.Label>카테고리</S.Label>
-              <S.CategorySelect {...register("categoryId")}>
-                <S.Category>뮤지컬</S.Category>
-                <S.Category>연극</S.Category>
-                <S.Category>콘서트</S.Category>
-              </S.CategorySelect>
+              <S.Select {...register("categoryId")}>
+                <S.Option>뮤지컬</S.Option>
+                <S.Option>연극</S.Option>
+                <S.Option>콘서트</S.Option>
+              </S.Select>
               <S.ErrorMessage>
                 {formState.errors.categoryId?.message ?? "\u00A0"}
               </S.ErrorMessage>
             </S.CategoryBox>
-            <S.NameBox>
-              <S.Label htmlFor="name">공연 이름</S.Label>
+            <S.AgeLimitBox>
+              <S.Label>연령제한</S.Label>
+              <S.Select {...register("ageLimit")}>
+                <S.Option value="ZERO">전체</S.Option>
+                <S.Option value="SEVEN">7세</S.Option>
+                <S.Option value="FIFTEEN">15세</S.Option>
+                <S.Option value="NINETEEN">19세</S.Option>
+              </S.Select>
+              <S.ErrorMessage>
+                {formState.errors.ageLimit?.message ?? "\u00A0"}
+              </S.ErrorMessage>
+            </S.AgeLimitBox>
+            <S.RunningTimeBox>
+              <S.Label>상영 시간</S.Label>
               <S.Input
-                isError={formState.errors.name?.message}
-                {...register("name")}
-                name="name"
-                id="name"
-                type="text"
-                placeholder="제목을 입력하세요."
+                {...register("runningTime")}
+                isError={formState.errors.runningTime?.message}
+                type="number"
+                placeholder="ex) 600"
               />
               <S.ErrorMessage>
-                {formState.errors.name?.message ?? "\u00A0"}
+                {formState.errors.runningTime?.message ?? "\u00A0"}
               </S.ErrorMessage>
-            </S.NameBox>
-          </S.CategoryNameWrapper>
+            </S.RunningTimeBox>
+          </S.SelectRunningTimeWrapper>
+          <S.NameBox>
+            <S.Label htmlFor="name">공연 이름</S.Label>
+            <S.Input
+              isError={formState.errors.name?.message}
+              {...register("name")}
+              name="name"
+              id="name"
+              type="text"
+              placeholder="제목을 입력하세요."
+            />
+            <S.ErrorMessage>
+              {formState.errors.name?.message ?? "\u00A0"}
+            </S.ErrorMessage>
+          </S.NameBox>
           <S.DescriptionBox>
             <S.Label htmlFor="description">공연 설명</S.Label>
             <S.Input
