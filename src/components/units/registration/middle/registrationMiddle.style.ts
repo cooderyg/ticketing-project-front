@@ -25,6 +25,10 @@ export const Label = styled.label`
   padding-right: 20px;
   font-size: 20px;
   cursor: pointer;
+  @media (max-width: 768px) {
+    font-size: 16px;
+    padding-right: 12px;
+  }
 `;
 
 export const Input = styled.input<IInputProps>`
@@ -42,18 +46,33 @@ export const Input = styled.input<IInputProps>`
 export const ErrorMessage = styled.p`
   color: ${color.red};
   padding: 4px 0 0 105px;
+  @media (max-width: 768px) {
+    padding: 4px 0;
+    font-size: 12px;
+  }
 `;
 
 export const RegistrationForm = styled.form`
   padding: 60px 80px;
   border: 1px solid ${color.gray};
   border-radius: 8px;
+  @media (max-width: 1020px) {
+    padding: 32px;
+  }
+  @media (max-width: 768px) {
+    padding: 0;
+    border: none;
+  }
 `;
 
-export const CategoryNameWrapper = styled.div`
+export const SelectRunningTimeWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
+  @media (max-width: 1020px) {
+    margin-bottom: 16px;
+  }
 `;
 
 export const CategoryBox = styled.div`
@@ -62,25 +81,45 @@ export const CategoryBox = styled.div`
   }
 `;
 
-export const CategorySelect = styled.select`
+export const AgeLimitBox = styled.div``;
+
+export const RunningTimeBox = styled.div`
+  width: calc(100% - 376px);
+  input {
+    width: calc(100% - 95px);
+  }
+  @media (max-width: 768px) {
+    width: 100%;
+    input {
+      width: calc(100% - 72px);
+    }
+  }
+`;
+
+export const Select = styled.select`
   padding: 8px 14px 8px 10px;
   background-color: transparent;
   border: 1px solid ${color.gray};
   border-radius: 8px;
   outline: none;
   cursor: pointer;
-
   :focus {
     border: 1px solid ${color.primary};
   }
 `;
 
-export const Category = styled.option``;
+export const Option = styled.option``;
 
 export const NameBox = styled.div`
-  flex: 1;
+  margin-bottom: 32px;
   > input {
     width: calc(100% - 95px);
+  }
+  @media (max-width: 768px) {
+    margin-bottom: 16px;
+    input {
+      width: calc(100% - 72px);
+    }
   }
 `;
 
@@ -89,12 +128,24 @@ export const DescriptionBox = styled.div`
   > input {
     width: calc(100% - 95px);
   }
+  @media (max-width: 768px) {
+    margin-bottom: 16px;
+    input {
+      width: calc(100% - 72px);
+    }
+  }
 `;
 
 export const AddressBox = styled.div`
   margin-bottom: 32px;
   > input {
     width: calc(100% - 95px);
+  }
+  @media (max-width: 768px) {
+    margin-bottom: 16px;
+    input {
+      width: calc(100% - 72px);
+    }
   }
 `;
 
@@ -104,12 +155,25 @@ export const DateWrapper = styled.div`
 `;
 
 export const DateBox = styled.div`
+  width: 100%;
   margin-bottom: 32px;
   > div {
-    width: calc(100% - 130px);
+    width: calc(100% - 95px);
   }
   > label {
     cursor: auto;
+  }
+  > div > div > div {
+    width: 100%;
+    padding: 8px 12px;
+  }
+  @media (max-width: 1020px) {
+    margin-bottom: 16px;
+  }
+  @media (max-width: 768px) {
+    > div {
+      width: calc(100% - 72px);
+    }
   }
 `;
 
@@ -118,6 +182,9 @@ export const SeatWrapper = styled.ul``;
 export const SeatBox = styled.li`
   display: flex;
   gap: 24px;
+  @media (max-width: 768px) {
+    gap: 12px;
+  }
 `;
 
 export const SeatInputBox = styled.div`
@@ -129,6 +196,18 @@ export const SeatInputBox = styled.div`
   > input {
     width: calc(100% - 90px);
   }
+
+  @media (max-width: 768px) {
+    width: calc(33% - 24px);
+    margin-bottom: 4px;
+    > label {
+      display: block;
+      padding-bottom: 8px;
+    }
+    > input {
+      width: 100%;
+    }
+  }
 `;
 
 export const SeatRemoveBtn = styled.button`
@@ -136,6 +215,10 @@ export const SeatRemoveBtn = styled.button`
   height: 40px;
   color: ${color.primary};
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    margin-top: 32px;
+  }
 `;
 
 export const SeatAddBtn = styled.button`

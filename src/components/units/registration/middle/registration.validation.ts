@@ -2,6 +2,11 @@ import * as yup from "yup";
 
 export const registrationSchema = yup.object({
   categoryId: yup.string().required("카테고리 선택은 필수입니다."),
+  ageLimit: yup.string().required("연령제한을 선택해주세요."),
+  runningTime: yup
+    .number()
+    .transform((value) => (Number.isNaN(value) ? null : value))
+    .required("상영시간을 입력해주세요."),
   name: yup.string().required("제목을 입력해주세요."),
   description: yup.string().required("설명을 입력해주세요."),
   address: yup.string().required("주소를 입력해주세요."),
@@ -25,10 +30,12 @@ export const registrationSchema = yup.object({
           grade: yup.string().required("등급을 입력해주세요."),
           price: yup
             .number()
+            .transform((value) => (Number.isNaN(value) ? null : value))
             .min(1000, "등급별 최소 좌석수는 1개입니다.")
             .required("가격을 입력해주세요."),
           seatNumMax: yup
             .number()
+            .transform((value) => (Number.isNaN(value) ? null : value))
             .max(100, "등급별 최대 좌석수는 100개입니다.")
             .min(1, "등급별 최소 좌석수는 1개입니다.")
             .required("좌석 수를 입력해주세요."),
