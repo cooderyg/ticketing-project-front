@@ -41,6 +41,7 @@ export default function Home() {
       return response.data;
     },
     {
+      cacheTime: 10000,
       getNextPageParam: (lastPage) =>
         lastPage.hasNextPage ? lastPage.page + 1 : undefined,
     }
