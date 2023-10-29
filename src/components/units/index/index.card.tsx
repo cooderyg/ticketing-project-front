@@ -1,28 +1,29 @@
 import Image from "next/image";
 import * as S from "./indexCard.style";
-import Poster from "../../../../public/images/main-poster.gif";
 import Link from "next/link";
+import { IConcert } from "../../../../pages";
 
 interface CardProps {
-  title: string;
-  time: string;
-  description: string;
-  cast: string;
+  concert: IConcert;
 }
 
 export default function Card(props: CardProps): JSX.Element {
   return (
     <S.Container>
-      <Link href="/details/aaa">
+      <Link href={`/details/${props.concert.id}`} prefetch={false}>
         <S.CardWrapper>
           <S.ImageBox>
-            <Image src={Poster} layout="fill" />
+            <Image
+              src={props.concert.imageUrl}
+              layout="fill"
+              alt={props.concert.name}
+            />
           </S.ImageBox>
           <S.InfoBox>
-            <S.Title>{props.title}</S.Title>
-            <S.Time>{props.time}</S.Time>
-            <S.Cast>출연 : {props.cast}</S.Cast>
-            <S.Description>{props.description}</S.Description>
+            <S.Name>{props.concert.name}</S.Name>
+            <S.Date>{props?.concert?.concertDate}</S.Date>
+            <S.Cast>{props.concert.category.name}</S.Cast>
+            <S.Description>{props.concert.description}</S.Description>
           </S.InfoBox>
         </S.CardWrapper>
       </Link>

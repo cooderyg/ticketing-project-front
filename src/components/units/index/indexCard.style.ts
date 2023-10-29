@@ -35,14 +35,14 @@ export const InfoBox = styled.div`
   width: calc(100% - 130px);
 `;
 
-export const Title = styled.h4`
+export const Name = styled.h4`
   padding-bottom: 12px;
   font-size: 20px;
   font-weight: bold;
   color: ${color.primary};
 `;
 
-export const Time = styled.p`
+export const Date = styled.p`
   padding-bottom: 8px;
   font-weight: bold;
 `;

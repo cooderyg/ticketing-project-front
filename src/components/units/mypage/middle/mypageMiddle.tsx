@@ -36,7 +36,7 @@ interface INicknameRes extends AxiosResponse {
 export default function MypageMiddle(): JSX.Element {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [accessToken] = useRecoilState(accessTokenState);
-
+  console.log(userInfo.profileImageUrl);
   // 프로필 이미지 기본적용
   const { mutate: profileImageMutate, isLoading: profileImageLoading } =
     useMutation({

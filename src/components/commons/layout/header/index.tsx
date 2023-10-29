@@ -15,6 +15,7 @@ import { useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import axiosClient from "../../../../commons/axios/axios-client";
 import { IUserInfo } from "../../../units/login/middle/loginMiddle";
+import { ROLE } from "../../../units/sign-up/middle/sign-up.validation";
 
 interface IRefreshResData {
   accessToken: string;
@@ -137,7 +138,15 @@ export default function LayoutHeader(): JSX.Element {
                   <S.NowPoint>
                     {userInfo.point.toLocaleString()} 포인트
                   </S.NowPoint>
-                  <S.ChargeButton>충전하기</S.ChargeButton>
+                  {userInfo.role === ROLE.HOST ? (
+                    <Link href="/registrations">
+                      <S.ChargeButton>공연등록</S.ChargeButton>
+                    </Link>
+                  ) : (
+                    <Link href="/points">
+                      <S.ChargeButton>충전하기</S.ChargeButton>
+                    </Link>
+                  )}
                 </S.PointWrapper>
                 <S.LogoutButtonWrapper>
                   <S.LogoutButton onClick={onClickLogoutBtn}>
