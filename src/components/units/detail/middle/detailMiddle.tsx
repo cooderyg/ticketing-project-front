@@ -1,7 +1,18 @@
 import Image from "next/image";
 import * as S from "./detailMiddle.style";
 import PosterImage from "../../../../../public/images/psy.jpg";
+import { useQuery } from "@tanstack/react-query";
+import axiosClient from "../../../../commons/axios/axios-client";
+import { useRouter } from "next/router";
 export default function DetailMiddle(): JSX.Element {
+  const route = useRouter();
+  const { data } = useQuery({
+    queryKey: ["datails"],
+    queryFn: () => {
+      return axiosClient.get(`/concerts/details/${route.query.id}`);
+    },
+    cacheTime: 10000,
+  });
   return (
     <>
       <S.Container>
