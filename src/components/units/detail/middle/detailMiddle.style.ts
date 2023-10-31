@@ -42,15 +42,18 @@ export const InfoPaymentWrapper = styled.div`
 
 // 이미지
 export const PosterBox = styled.div`
+  position: relative;
   margin-right: 120px;
   width: 300px;
-  height: 400;
+  height: 400px;
   @media (max-width: 1080px) {
     margin-right: 20px;
   }
   @media (max-width: 950px) {
     margin-right: 0;
-    width: 100%;
+    width: calc(100% - 340px);
+    height: auto;
+    aspect-ratio: 3 / 4;
   }
 
   @media (max-width: 768px) {
@@ -82,14 +85,16 @@ export const DescBox = styled.li`
 
 // 결제
 export const PriceBox = styled.ul`
-  padding-left: 20px;
-
   > li {
     padding-top: 8px;
     font-weight: 600;
   }
   > li:first-child {
     padding-top: 0;
+  }
+  > li > span:nth-of-type(1) {
+    display: inline-block;
+    width: 48px;
   }
 `;
 

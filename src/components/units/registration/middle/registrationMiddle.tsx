@@ -18,7 +18,7 @@ interface IDates {
   $d: Date;
 }
 
-interface ISeatInfo {
+export interface ISeatInfo {
   grade: string;
   price: number;
   seatNumMax: number;
