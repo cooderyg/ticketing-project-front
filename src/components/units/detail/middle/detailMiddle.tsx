@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import axiosClient from "../../../../commons/axios/axios-client";
 import { useRouter } from "next/router";
 import { AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 export enum AGELIMIT {
   ZERO = "ZERO",
@@ -49,10 +49,17 @@ interface ISeatGradeAndPrice {
   price: number;
 }
 
+interface ISelectedSeat {
+  grade: string;
+  seatNum: number;
+}
+
 export default function DetailMiddle(): JSX.Element {
   const [seatGradeandePrice, setSeatGradeAndPrice] = useState<
     ISeatGradeAndPrice[]
   >([]);
+  const [selectedSeats, setSelectedSeats] = useState<ISelectedSeat[]>([]);
+
   const route = useRouter();
   const { data } = useQuery<IDetailRes>({
     queryKey: ["datails"],
@@ -63,6 +70,12 @@ export default function DetailMiddle(): JSX.Element {
   });
 
   console.log(data);
+  const onSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const [grade, seatNum] = event.target.value.split("-");
+    const gradeAndSeatNum = { grade, seatNum: +seatNum };
+    if (!selectedSeats.includes(gradeAndSeatNum))
+      setSelectedSeats((prev) => [...prev, gradeAndSeatNum]);
+  };
 
   useEffect(() => {
     const grade: string[] = [];
@@ -126,7 +139,7 @@ export default function DetailMiddle(): JSX.Element {
               </S.DescBox>
             </S.InfoBox>
             <S.PaymentBox>
-              <S.SeatSelect>
+              <S.SeatSelect onChange={onSelectChange}>
                 {data?.data.seats.map((el) =>
                   !el.isSoldOut ? (
                     <S.Seat key={el.id}>{`${el.grade}-${el.seatNum}`}</S.Seat>
@@ -134,10 +147,9 @@ export default function DetailMiddle(): JSX.Element {
                 )}
               </S.SeatSelect>
               <S.SelectedSeatBox>
-                <li>VIP 1번</li>
-                <li>VIP 1번</li>
-                <li>VIP 1번</li>
-                <li>VIP 1번</li>
+                {selectedSeats.map((el, index) => (
+                  <li key={index}>{`${el.grade}-${el.seatNum}`}</li>
+                ))}
               </S.SelectedSeatBox>
               <S.Price>총 결제금액 100,000원</S.Price>
               <S.PaymentBtn>결제하기</S.PaymentBtn>

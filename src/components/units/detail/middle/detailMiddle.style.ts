@@ -118,9 +118,11 @@ export const SelectedSeatBox = styled.ul`
   max-width: 280px;
   margin-top: 20px;
   > li {
+    width: 64px;
     padding: 4px 12px;
     background-color: aqua;
     border-radius: 50px;
+    text-align: center;
     font-size: 12px;
     cursor: pointer;
   }
