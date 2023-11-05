@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import axiosClient from "../../../../commons/axios/axios-client";
 import { useRouter } from "next/router";
 import { AxiosResponse } from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 
 export enum AGELIMIT {
   ZERO = "ZERO",
@@ -77,6 +77,13 @@ export default function DetailMiddle(): JSX.Element {
       setSelectedSeats((prev) => [...prev, gradeAndSeatNum]);
   };
 
+  const onClickSelectList = (event: MouseEvent<HTMLUListElement>) => {
+    if (!(event.target instanceof HTMLLIElement)) return;
+    const index = Number(event.target.dataset.index);
+    setSelectedSeats((prev) => {
+      return prev.toSpliced(index, 1);
+    });
+  };
   useEffect(() => {
     const grade: string[] = [];
     const price: number[] = [];
@@ -146,9 +153,12 @@ export default function DetailMiddle(): JSX.Element {
                   ) : null
                 )}
               </S.SeatSelect>
-              <S.SelectedSeatBox>
+              <S.SelectedSeatBox onClick={onClickSelectList}>
                 {selectedSeats.map((el, index) => (
-                  <li key={index}>{`${el.grade}-${el.seatNum}`}</li>
+                  <li
+                    data-index={index}
+                    key={index}
+                  >{`${el.grade}-${el.seatNum}`}</li>
                 ))}
               </S.SelectedSeatBox>
               <S.Price>총 결제금액 100,000원</S.Price>
